@@ -1,141 +1,135 @@
+/* ==============================
+   전체 페이지
+================================ */
+
 .dream-page {
   width: 100%;
   min-height: 100vh;
-  background: #18243a;
+
+  background: white;
+
   color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+
   overflow: hidden;
 }
 
-.intro {
-  text-align: center;
-  z-index: 1;
-}
-
-.stars {
-  position: absolute;
-  top: 15%;
-  left: 10%;
-  font-size: 24px;
-  letter-spacing: 20px;
-}
-
-.question {
-  font-size: 28px;
-  line-height: 1.5;
-  margin-bottom: 40px;
-}
-
-.today {
-  font-size: 18px;
-  margin-bottom: 30px;
-}
-
-.intro h1 {
-  font-size: 48px;
-  line-height: 1.3;
-  margin-bottom: 50px;
-}
-
-.intro button {
-  padding: 15px 35px;
-  border: 1px solid white;
-  background: transparent;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.intro button:hover {
-  background: white;
-  color: #18243a;
-}
+/* ==============================
+   INTRO
+================================ */
 
 .intro-screen {
   position: relative;
-  width: 100%;
-  min-height: 100vh;
+
+  width: min(100%, 56.27vh);
+  height: 100vh;
+  min-height: 100svh;
+
+  margin: 0 auto;
+
   overflow: hidden;
+
   display: flex;
   justify-content: center;
   align-items: center;
 
-  background:
-    radial-gradient(circle at 50% 25%, rgba(182, 153, 255, 0.4), transparent 32%),
-    radial-gradient(circle at 20% 60%, rgba(78, 108, 255, 0.25), transparent 35%),
-    radial-gradient(circle at 80% 70%, rgba(199, 113, 255, 0.2), transparent 30%),
-    linear-gradient(
-      180deg,
-      #332160 0%,
-      #171737 45%,
-      #090b22 100%
-    );
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
+
+
+/* ==============================
+   우주 배경 빛
+================================ */
 
 .space-glow {
   position: absolute;
+
   border-radius: 50%;
+
   filter: blur(90px);
+
   pointer-events: none;
 }
+
 
 .glow-one {
   width: 350px;
   height: 350px;
+
   top: -100px;
   left: 10%;
+
   background: rgba(183, 149, 255, 0.28);
 }
+
 
 .glow-two {
   width: 300px;
   height: 300px;
+
   right: 5%;
   bottom: -80px;
+
   background: rgba(80, 127, 255, 0.2);
 }
 
+
+/* ==============================
+   별
+================================ */
+
 .star {
   position: absolute;
+
   color: white;
+
   opacity: 0.8;
+
   animation: twinkle 2.5s ease-in-out infinite alternate;
 }
+
 
 .star-1 {
   top: 12%;
   left: 15%;
 }
 
+
 .star-2 {
   top: 23%;
   right: 18%;
+
   animation-delay: 0.8s;
 }
+
 
 .star-3 {
   top: 68%;
   left: 12%;
+
   animation-delay: 1.2s;
 }
+
 
 .star-4 {
   bottom: 15%;
   right: 20%;
+
   animation-delay: 0.3s;
 }
+
 
 .star-5 {
   top: 35%;
   left: 75%;
+
   animation-delay: 1.6s;
 }
 
+
 @keyframes twinkle {
+
   from {
     opacity: 0.25;
     transform: scale(0.8);
@@ -145,40 +139,65 @@
     opacity: 1;
     transform: scale(1.3);
   }
+
 }
+
+
+/* ==============================
+   별똥별
+================================ */
+
+/* ==============================
+   PIXEL SHOOTING STARS
+================================ */
+
+/* ==============================
+   별똥별 각각의 위치 / 속도
+================================ */
+
+/* ==============================
+   PIXEL SHOOTING STARS
+================================ */
 
 .shooting-star {
   position: absolute;
-  width: 120px;
-  height: 2px;
 
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(133, 210, 255, 0.8),
-    white
-  );
+  width: 5px;
+  height: 5px;
 
-  transform: rotate(-35deg);
+  background: #ffffff;
+
+  /* 픽셀 꼬리 */
+  box-shadow:
+    6px -6px 0 rgba(210, 225, 255, 0.95),
+    12px -12px 0 rgba(180, 205, 255, 0.85),
+    18px -18px 0 rgba(170, 165, 255, 0.7),
+    24px -24px 0 rgba(200, 130, 255, 0.55),
+    30px -30px 0 rgba(255, 150, 210, 0.35);
+
   opacity: 0;
+
+  pointer-events: none;
+
+  z-index: 2;
+
+  image-rendering: pixelated;
+
+  animation-name: pixelShootingStar;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
-.shooting-star-1 {
-  top: 20%;
-  left: -20%;
-  animation: shootingStar 5s linear infinite;
-}
 
-.shooting-star-2 {
-  top: 55%;
-  left: -30%;
-  animation: shootingStar 7s linear infinite;
-  animation-delay: 2.5s;
-}
+/* 오른쪽 위 → 왼쪽 아래 */
 
-@keyframes shootingStar {
+@keyframes pixelShootingStar {
   0% {
-    transform: translate(0, 0) rotate(-35deg);
+    translate: 0 0;
+    opacity: 0;
+  }
+
+  5% {
     opacity: 0;
   }
 
@@ -186,146 +205,698 @@
     opacity: 1;
   }
 
-  30% {
-    opacity: 0;
-  }
-
-  100% {
-    transform: translate(1200px, 500px) rotate(-35deg);
-    opacity: 0;
-  }
-}
-
-.rocket-area {
-  position: relative;
-  z-index: 3;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 25px;
-}
-
-.rocket-guide {
-  font-size: 11px;
-  letter-spacing: 4px;
-  color: rgba(255, 255, 255, 0.7);
-
-  animation: guideBlink 2s ease-in-out infinite;
-}
-
-@keyframes guideBlink {
-  0%,
-  100% {
-    opacity: 0.4;
-  }
-
-  50% {
+  35% {
     opacity: 1;
   }
+
+  52% {
+    opacity: 0;
+  }
+
+  100% {
+    translate:
+      var(--travel-x, -650px)
+      var(--fall-distance, 520px);
+
+    opacity: 0;
+  }
+}
+/* 거의 화면 꼭대기 */
+.shooting-star-1 {
+  top: -3%;
+  left: 70%;
+
+  transform: scale(0.8);
+
+  animation-duration: 2.4s;
+  animation-delay: 0s;
+
+  --fall-distance: 300px;
 }
 
-.rocket-button {
-  border: none;
-  background: none;
+
+/* 위쪽 */
+.shooting-star-2 {
+  top: 7%;
+  right: -15%;
+
+  transform: scale(0.65);
+
+  animation-duration: 3s;
+  animation-delay: 0.9s;
+}
+
+
+/* 위쪽 큰 별똥별 */
+.shooting-star-3 {
+  top: 20%;
+  right: -35%;
+
+  transform: scale(1.15);
+
+  animation-duration: 2.7s;
+  animation-delay: 1.8s;
+}
+
+
+/* 중앙보다 살짝 위 */
+.shooting-star-4 {
+  top: 34%;
+  right: -20%;
+
+  transform: scale(0.8);
+
+  animation-duration: 3.4s;
+  animation-delay: 0.4s;
+}
+
+
+/* 중앙 아래 */
+.shooting-star-5 {
+  top: 48%;
+  right: -35%;
+
+  transform: scale(0.65);
+
+  animation-duration: 2.8s;
+  animation-delay: 2.4s;
+   --fall-distance: 360px;
+}
+
+
+/* 아래쪽 */
+.shooting-star-6 {
+  top: 62%;
+  right: -25%;
+
+  transform: scale(0.9);
+
+  animation-duration: 3.2s;
+  animation-delay: 1.3s;
+  --fall-distance: 280px;
+}
+
+
+/* 거의 화면 아래쪽 */
+.shooting-star-7 {
+  top: 76%;
+  right: -40%;
+
+  transform: scale(0.55);
+
+  animation-duration: 2.6s;
+  animation-delay: 2.1s;
+  --fall-distance: 200px;
+}
+
+
+/* ==============================
+   강아지 비행
+================================ */
+
+
+.dog-flight {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 220px;
+
+  /*
+    이 요소의 정중앙 자체를
+    화면 정중앙에 맞춤
+  */
+  margin-left: -110px;
+  margin-top: -110px;
+
+  z-index: 10;
+
+  animation: dogFlight 3.2s linear forwards;
+
+  will-change: transform;
+}
+
+
+@keyframes dogFlight {
+
+  /* 화면 왼쪽 밖에서 빠르게 진입 */
+
+  0% {
+    transform:
+      translate(-110vw, 20vh)
+      rotate(-10deg)
+      scale(0.7);
+
+    opacity: 0;
+  }
+
+  4% {
+    opacity: 1;
+  }
+
+  12% {
+    transform:
+      translate(-80vw, 12vh)
+      rotate(-7deg)
+      scale(0.78);
+  }
+
+  22% {
+    transform:
+      translate(-55vw, 3vh)
+      rotate(-3deg)
+      scale(0.88);
+  }
+
+  30% {
+    transform:
+      translate(-32vw, -4vh)
+      rotate(5deg)
+      scale(0.96);
+  }
+
+
+  /* =========================
+     루프 진입
+  ========================= */
+
+  36% {
+    transform:
+      translate(-20vw, -6vh)
+      rotate(20deg)
+      scale(1);
+  }
+
+  40% {
+    transform:
+      translate(-17vw, -16vh)
+      rotate(45deg)
+      scale(1);
+  }
+
+  44% {
+    transform:
+      translate(-12vw, -26vh)
+      rotate(75deg)
+      scale(1);
+  }
+
+  48% {
+    transform:
+      translate(-5vw, -33vh)
+      rotate(110deg)
+      scale(1);
+  }
+
+  52% {
+    transform:
+      translate(4vw, -35vh)
+      rotate(150deg)
+      scale(1);
+  }
+
+  56% {
+    transform:
+      translate(12vw, -31vh)
+      rotate(190deg)
+      scale(1);
+  }
+
+  60% {
+    transform:
+      translate(18vw, -23vh)
+      rotate(225deg)
+      scale(1);
+  }
+
+  64% {
+    transform:
+      translate(20vw, -13vh)
+      rotate(255deg)
+      scale(1);
+  }
+
+  68% {
+    transform:
+      translate(18vw, -2vh)
+      rotate(285deg)
+      scale(1);
+  }
+
+  72% {
+    transform:
+      translate(13vw, 7vh)
+      rotate(310deg)
+      scale(1);
+  }
+
+  76% {
+    transform:
+      translate(6vw, 11vh)
+      rotate(330deg)
+      scale(1);
+  }
+
+  80% {
+    transform:
+      translate(0vw, 9vh)
+      rotate(345deg)
+      scale(1);
+  }
+
+
+  /* =========================
+     루프 종료 → 중앙으로
+  ========================= */
+
+  85% {
+    transform:
+      translate(-3vw, 5vh)
+      rotate(355deg)
+      scale(1);
+  }
+
+90% {
+  transform:
+    translate(-4vw, 4vh)
+    rotate(357deg)
+    scale(1);
+}
+
+94% {
+  transform:
+    translate(-3vw, 2vh)
+    rotate(360deg)
+    scale(1);
+}
+
+97% {
+  transform:
+    translate(-1vw, 1vh)
+    rotate(360deg)
+    scale(1);
+}
+
+100% {
+  transform:
+    translate(0, 0)
+    rotate(360deg)
+    scale(1);
+
+  opacity: 1;
+}
+}
+
+
+
+/* ==============================
+   강아지 버튼
+================================ */
+
+.dog-button {
+  border: 0;
+
+  padding: 0;
+
+  background: transparent;
+
   cursor: pointer;
 
-  font-size: 90px;
+  filter:
+    drop-shadow(
+      0 0 18px
+      rgba(255, 225, 120, 0.35)
+    );
 
-  filter: drop-shadow(0 0 20px rgba(147, 195, 255, 0.6));
+  /*
+    비행이 끝난 5초 뒤부터
+    둥둥 움직임
+  */
 
-  animation: rocketFloat 2.5s ease-in-out infinite;
+  animation:
+  dogFloat 2.6s
+  ease-in-out
+  3.2s
+  infinite;
 }
 
-.rocket-button:hover {
-  transform: scale(1.08);
+
+.dog-button:hover {
+  filter:
+    drop-shadow(
+      0 0 28px
+      rgba(255, 225, 120, 0.65)
+    );
 }
 
-@keyframes rocketFloat {
+
+@keyframes dogFloat {
+
   0%,
   100% {
-    transform: translateY(12px);
+    transform: translateY(0);
   }
+
 
   50% {
     transform: translateY(-12px);
   }
+
 }
+
+
+/* ==============================
+   강아지 이미지
+================================ */
+
+.dog-star {
+  display: block;
+
+  width: 200px;
+  height: auto;
+
+  user-select: none;
+  -webkit-user-drag: none;
+
+/* filter:
+    drop-shadow(0 0 4px rgba(71, 114, 195, 0.9))
+    drop-shadow(0 0 10px rgba(50, 78, 176, 0.75))
+    drop-shadow(0 0 20px rgba(67, 44, 168, 0.6))
+    drop-shadow(0 0 34px rgba(82, 34, 148, 0.4)); */
+}
+
+/* ==============================
+   강아지 비행 궤적
+================================ */
+
+.trail-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ==============================
+   PIXEL TRAIL
+================================ */
+
+.trail-particle {
+  position: absolute;
+  pointer-events: none;
+  image-rendering: pixelated;
+
+  animation:
+    pixelFade
+    var(--duration)
+    steps(7)
+    forwards;
+}
+
+/* 작은 네모 픽셀 */
+.trail-particle.pixel {
+  width: var(--pixel-size);
+  height: var(--pixel-size);
+
+  background: var(--particle-color);
+
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* 픽셀 십자 별 */
+.trail-particle.cross {
+  width: calc(var(--pixel-size) * 3);
+  height: calc(var(--pixel-size) * 3);
+  background: transparent;
+}
+
+.trail-particle.cross::before {
+  content: "";
+  position: absolute;
+
+  width: var(--pixel-size);
+  height: calc(var(--pixel-size) * 3);
+
+  left: var(--pixel-size);
+  top: 0;
+
+  background: var(--particle-color);
+}
+
+.trail-particle.cross::after {
+  content: "";
+  position: absolute;
+
+  width: calc(var(--pixel-size) * 3);
+  height: var(--pixel-size);
+
+  left: 0;
+  top: var(--pixel-size);
+
+  background: var(--particle-color);
+}
+
+/* 작은 사선 픽셀 별똥별 */
+.trail-particle.mini-comet {
+  width: var(--pixel-size);
+  height: var(--pixel-size);
+
+  background: var(--particle-color);
+
+  box-shadow:
+    calc(var(--pixel-size) * -1)
+      calc(var(--pixel-size) * 1)
+      0
+      var(--particle-color),
+
+    calc(var(--pixel-size) * -2)
+      calc(var(--pixel-size) * 2)
+      0
+      var(--particle-color),
+
+    calc(var(--pixel-size) * -3)
+      calc(var(--pixel-size) * 3)
+      0
+      color-mix(in srgb, var(--particle-color) 65%, transparent),
+
+    calc(var(--pixel-size) * -4)
+      calc(var(--pixel-size) * 4)
+      0
+      color-mix(in srgb, var(--particle-color) 35%, transparent);
+}
+
+@keyframes pixelFade {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+
+  45% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(var(--move-x), var(--move-y))
+      scale(0.5);
+  }
+}
+
+/* ==============================
+   클릭 안내 문구
+================================ */
+
+.dog-guide {
+  position: absolute;
+
+  left: 50%;
+
+  /*
+    강아지 이미지 아래쪽
+  */
+
+  top: calc(100% + 18px);
+
+  transform: translateX(-50%);
+
+  width: max-content;
+
+  margin: 0;
+
+  font-size: 11px;
+
+  letter-spacing: 4px;
+
+  color: rgba(255, 255, 255, 0.7);
+
+  animation:
+    guideAppear 0.7s ease 3.2s both,
+    guideBlink 2s ease-in-out 3.9s infinite;
+}
+
+
+/*
+  비행 중에는 안내문 안 보이게 하고
+  도착한 뒤 등장
+*/
+
+@keyframes guideAppear {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes guideBlink {
+
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+
+  50% {
+    opacity: 1;
+  }
+
+}
+
+
+/* ==============================
+   타이포
+================================ */
 
 .intro-typography {
   position: relative;
-  z-index: 3;
+
+  z-index: 20;
 
   text-align: center;
+
   color: white;
 }
 
+
+/*
+  모든 문구는 처음엔 숨겨져 있음
+*/
+
 .intro-line {
   opacity: 0;
-  transform: translateY(20px) scale(0.96);
 
-  animation: textAppear 0.8s ease forwards;
+  transform:
+    translateY(20px)
+    scale(0.96);
+
+  animation:
+    textAppear
+    0.8s
+    ease
+    forwards;
 }
+
 
 .line-1 {
   animation-delay: 0.2s;
+
+  font-size: 22px;
+
+  margin-bottom: 25px;
 }
+
 
 .line-2 {
   animation-delay: 0.8s;
+
+  font-size: 15px;
+
+  letter-spacing: 2px;
+
+  margin-bottom: 35px;
 }
+
 
 .line-3 {
   animation-delay: 1.4s;
+
+  font-size:
+    clamp(34px, 6vw, 70px);
+
+  line-height: 1.15;
+
+  font-weight: 300;
+
+  margin:
+    0
+    0
+    45px;
 }
+
+
+.line-3 strong {
+  font-size: 1.15em;
+
+  font-weight: 600;
+}
+
 
 .line-4 {
   animation-delay: 2.1s;
 }
 
+
 @keyframes textAppear {
+
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+
+    transform:
+      translateY(0)
+      scale(1);
   }
+
 }
 
-.line-1 {
-  font-size: 22px;
-  margin-bottom: 25px;
-}
 
-.line-2 {
-  font-size: 15px;
-  letter-spacing: 2px;
-  margin-bottom: 35px;
-}
-
-.line-3 {
-  font-size: clamp(34px, 6vw, 70px);
-  line-height: 1.15;
-  font-weight: 300;
-  margin: 0 0 45px;
-}
-
-.line-3 strong {
-  font-size: 1.15em;
-  font-weight: 600;
-}
+/* ==============================
+   ENTER DREAM
+================================ */
 
 .enter-button {
-  padding: 14px 32px;
+  padding:
+    14px
+    32px;
 
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.7);
+
   border-radius: 999px;
 
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
+  background:
+    rgba(255, 255, 255, 0.05);
+
+  backdrop-filter:
+    blur(10px);
 
   color: white;
 
   font-size: 12px;
+
   letter-spacing: 4px;
 
   cursor: pointer;
@@ -336,12 +907,58 @@
     box-shadow 0.3s ease;
 }
 
-.enter-button:hover {
-  transform: translateY(-3px);
 
-  background: rgba(255, 255, 255, 0.15);
+.enter-button:hover {
+  transform:
+    translateY(-3px);
+
+  background:
+    rgba(255, 255, 255, 0.15);
 
   box-shadow:
-    0 0 20px rgba(163, 181, 255, 0.3),
-    0 0 40px rgba(187, 135, 255, 0.15);
+    0 0 20px
+    rgba(163, 181, 255, 0.3),
+
+    0 0 40px
+    rgba(187, 135, 255, 0.15);
+}
+
+
+/* ==============================
+   DREAM MAP
+   임시 화면
+================================ */
+
+.dream-map {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  background: #090b22;
+}
+
+
+.dream-map button {
+  margin-top: 30px;
+
+  padding:
+    12px
+    24px;
+
+  border:
+    1px solid white;
+
+  background:
+    transparent;
+
+  color: white;
+
+  cursor: pointer;
 }
