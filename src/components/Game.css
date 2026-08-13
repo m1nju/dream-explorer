@@ -1,0 +1,659 @@
+/* ==============================
+   GAME PAGE
+================================ */
+
+.game-page {
+  position: relative;
+
+  width: min(100%, 56.27vh);
+  height: 100vh;
+  min-height: 100svh;
+
+  margin: 0 auto;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #27265c 0%,
+      #50447e 45%,
+      #8c70a5 100%
+    );
+
+  color: white;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  user-select: none;
+  touch-action: none;
+}
+
+
+/* ==============================
+   상단 UI
+================================ */
+
+.game-ui {
+  position: absolute;
+
+  top: 22px;
+  left: 18px;
+  right: 18px;
+
+  z-index: 80;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+
+.game-back {
+  padding: 8px;
+
+  border: 0;
+
+  background: transparent;
+
+  color:
+    rgba(255, 255, 255, 0.75);
+
+  font: inherit;
+  font-size: 7px;
+
+  cursor: pointer;
+}
+
+
+.game-status {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 7px;
+}
+
+
+.game-score {
+  font-size: 7px;
+
+  text-shadow:
+    2px 2px 0
+    rgba(70, 45, 120, 0.7);
+}
+
+
+/* ==============================
+   GAME WORLD
+================================ */
+
+.game-world {
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+}
+
+
+/* ==============================
+   플레이어
+================================ */
+
+/* ==============================
+   플레이어 전체 영역
+================================ */
+
+.game-player {
+  position: absolute;
+
+  left: 14%;
+  bottom: 22%;
+
+  z-index: 20;
+
+  width: 64px;
+  height: 64px;
+
+  transform-origin: bottom center;
+
+  will-change: transform;
+}
+
+
+/* ==============================
+   캐릭터 이미지 공통
+================================ */
+
+.game-player-image {
+  position: absolute;
+
+  left: 50%;
+
+  width: 64px;
+  height: 64px;
+
+  transform: translateX(-50%);
+
+  object-fit: contain;
+
+  image-rendering: pixelated;
+
+  user-select: none;
+  -webkit-user-drag: none;
+
+  pointer-events: none;
+}
+
+
+/* ==============================
+   달리기 이미지 위치 보정
+================================ */
+
+.game-player.running .game-player-image {
+  bottom: -10px;
+}
+
+
+/* ==============================
+   점프 이미지 위치 보정
+================================ */
+
+.game-player.jumping .game-player-image {
+  bottom: -10px;
+}
+
+
+/* ==============================
+   슬라이드 이미지 위치 보정
+================================ */
+
+.game-player.sliding .game-player-image {
+  width: 76px;
+  height: 64px;
+
+  bottom: -10px;
+}
+
+
+/* ==============================
+   기본 충돌박스
+================================ */
+
+.player-hitbox {
+  position: absolute;
+
+  left: 50%;
+  bottom: 0;
+
+  width: 34px;
+  height: 48px;
+
+  transform: translateX(-50%);
+
+  pointer-events: none;
+}
+
+
+/* ==============================
+   슬라이드 충돌박스
+================================ */
+
+.game-player.sliding .player-hitbox {
+  width: 55px;
+  height: 20px;
+
+  bottom: 2px;
+}
+
+/* ==============================
+   땅
+================================ */
+
+.game-ground {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 22%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #41336b,
+      #241d48
+    );
+}
+
+
+.ground-line {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 5px;
+
+  background: #d5bdff;
+
+  box-shadow:
+    0 5px 0 #9c7bd4,
+    0 10px 0
+    rgba(88, 65, 140, 0.8);
+}
+
+
+/* ==============================
+   장애물
+================================ */
+
+.game-obstacle {
+  position: absolute;
+
+  z-index: 15;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  will-change: left;
+}
+
+
+/* ☁️ 낮은 장애물
+   → 점프 */
+
+.obstacle-cloud {
+  bottom: 22%;
+
+  width: 46px;
+  height: 34px;
+
+  font-size: 36px;
+}
+
+
+/* ⭐ 공중 장애물
+   → 슬라이드 */
+
+.obstacle-star {
+  bottom: calc(22% + 35px);
+
+  width: 38px;
+  height: 38px;
+
+  font-size: 30px;
+
+  animation:
+    obstacleSpin
+    1.2s
+    steps(8)
+    infinite;
+}
+
+
+/* 🌙 큰 장애물
+   → 점프 */
+
+.obstacle-moon {
+  bottom: 22%;
+
+  width: 50px;
+  height: 66px;
+
+  font-size: 48px;
+
+  animation:
+    obstacleFloat
+    1.1s
+    steps(8)
+    infinite;
+}
+
+/* ==============================
+   🛸 슬라이드 전용 장애물
+================================ */
+
+.obstacle-ufo {
+  /* 슬라이드한 캐릭터 머리 바로 위 정도 */
+  bottom: calc(22% + 31px);
+
+  width: 72px;
+
+  /* 위로는 못 뛰어넘게 판정 길게 */
+  height: 65vh;
+
+  font-size: 42px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  z-index: 16;
+
+  animation:
+    ufoFloat
+    0.8s
+    steps(6)
+    infinite;
+}
+
+
+/* UFO가 아주 살짝 둥둥 */
+
+@keyframes ufoFloat {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -3px;
+  }
+}
+
+
+@keyframes obstacleSpin {
+  from {
+    rotate: 0deg;
+  }
+
+  to {
+    rotate: 360deg;
+  }
+}
+
+
+@keyframes obstacleFloat {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -4px;
+  }
+}
+
+
+/* ==============================
+   모바일 컨트롤
+================================ */
+
+.game-controls {
+  position: absolute;
+
+  left: 18px;
+  right: 18px;
+  bottom: 28px;
+
+  z-index: 70;
+
+  display: flex;
+
+  gap: 14px;
+}
+
+
+.control-button {
+  flex: 1;
+
+  height: 58px;
+
+  border:
+    2px solid
+    rgba(255, 255, 255, 0.75);
+
+  background:
+    rgba(30, 22, 80, 0.48);
+
+  color: white;
+
+  font: inherit;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  box-shadow:
+    4px 4px 0
+    rgba(62, 41, 115, 0.75);
+
+  backdrop-filter:
+    blur(4px);
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 5px;
+}
+
+
+.control-button span {
+  font-size: 6px;
+}
+
+
+.control-button:active {
+  transform:
+    translate(2px, 2px);
+
+  box-shadow:
+    2px 2px 0
+    rgba(62, 41, 115, 0.75);
+}
+
+
+.jump-button {
+  color: #bcecff;
+}
+
+
+.slide-button {
+  color: #f4c6ff;
+}
+
+
+/* ==============================
+   START
+================================ */
+
+.game-start-screen {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  background:
+    rgba(17, 13, 47, 0.48);
+
+  backdrop-filter:
+    blur(2px);
+}
+
+
+.game-start-screen h1 {
+  margin:
+    0 0 30px;
+
+  font-size: 20px;
+
+  line-height: 1.5;
+
+  text-shadow:
+    3px 3px 0
+    #674c9b;
+}
+
+
+.game-start-screen p {
+  margin:
+    0 0 10px;
+
+  font-size: 7px;
+
+  line-height: 1.8;
+}
+
+
+.game-help {
+  margin-top: 10px !important;
+
+  opacity: 0.55;
+}
+
+
+.game-start-screen button {
+  margin-top: 28px;
+
+  padding:
+    13px 22px;
+
+  border:
+    2px solid white;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
+
+  color: white;
+
+  font: inherit;
+  font-size: 8px;
+
+  cursor: pointer;
+
+  box-shadow:
+    4px 4px 0
+    rgba(
+      74,
+      52,
+      125,
+      0.8
+    );
+}
+
+
+/* ==============================
+   GAME OVER
+================================ */
+
+.game-over-screen {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 110;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  background:
+    rgba(
+      20,
+      14,
+      55,
+      0.74
+    );
+
+  backdrop-filter:
+    blur(3px);
+
+  text-align: center;
+}
+
+
+.game-over-label {
+  margin:
+    0 0 18px;
+
+  font-size: 18px;
+
+  color: #ff9fc5;
+
+  text-shadow:
+    3px 3px 0
+    rgba(
+      80,
+      45,
+      120,
+      0.8
+    );
+}
+
+
+.game-over-screen h2 {
+  margin:
+    0 0 28px;
+
+  font-size: 10px;
+}
+
+
+.game-over-screen button {
+  min-width: 120px;
+
+  margin:
+    6px 0;
+
+  padding:
+    12px 16px;
+
+  border:
+    2px solid white;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  color: white;
+
+  font: inherit;
+  font-size: 8px;
+
+  cursor: pointer;
+
+  box-shadow:
+    4px 4px 0
+    rgba(
+      75,
+      50,
+      125,
+      0.8
+    );
+}
+
+
+.game-over-back {
+  opacity: 0.65;
+}

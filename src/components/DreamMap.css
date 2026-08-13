@@ -1,0 +1,38 @@
+/* ==============================
+   DREAM MAP
+   임시 화면
+================================ */
+
+.dream-map {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  background: #090b22;
+}
+
+
+.dream-map button {
+  margin-top: 30px;
+
+  padding:
+    12px
+    24px;
+
+  border:
+    1px solid white;
+
+  background:
+    transparent;
+
+  color: white;
+
+  cursor: pointer;
+}
