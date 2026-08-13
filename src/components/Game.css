@@ -13,14 +13,7 @@
 
   overflow: hidden;
 
-  background:
-    linear-gradient(
-      180deg,
-      #27265c 0%,
-      #50447e 45%,
-      #8c70a5 100%
-    );
-
+  background-color: #01319e;
   color: white;
 
   font-family:
@@ -28,7 +21,56 @@
     monospace;
 
   user-select: none;
+  -webkit-user-select: none;
+
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+
   touch-action: none;
+
+
+  /* ==============================
+     주요 조절 변수
+  ============================== */
+
+  /* 캐릭터 + 장애물 + 바닥 전체 높이 */
+  --world-up: 8svh;
+
+  /* JUMP / SLIDE 버튼 위치 */
+  --controls-up: 80px;
+
+  /* 캐릭터 크기 */
+  --player-size:
+    clamp(62px, 10.5svh, 86px);
+
+  /* 버튼 크기 */
+  --control-height:
+    clamp(58px, 8svh, 72px);
+
+  --control-font-size:
+    clamp(10px, 1.5svh, 13px);
+
+  --control-label-size:
+    clamp(5px, 0.8svh, 7px);
+
+
+  /* ==============================
+     지면 관련
+  ============================== */
+
+  --ground-base: 25%;
+
+  --ground-object-offset: -10px;
+
+  /* 바닥 이미지 세로 위치 */
+  --ground-image-y: -0.6svh;
+
+  /* 장애물만 전체적으로 조금 위 */
+  --obstacle-up: 0.8svh;
+
+  --star-height: 35px;
+
+  --ufo-height: 21px;
 }
 
 
@@ -39,7 +81,12 @@
 .game-ui {
   position: absolute;
 
-  top: 22px;
+  top:
+    calc(
+      22px +
+      env(safe-area-inset-top)
+    );
+
   left: 18px;
   right: 18px;
 
@@ -48,6 +95,9 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 
@@ -55,16 +105,25 @@
   padding: 8px;
 
   border: 0;
-
   background: transparent;
 
   color:
     rgba(255, 255, 255, 0.75);
 
   font: inherit;
-  font-size: 7px;
+
+  font-size:
+    clamp(6px, 0.9svh, 8px);
 
   cursor: pointer;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+
+  touch-action: manipulation;
 }
 
 
@@ -79,11 +138,15 @@
 
 
 .game-score {
-  font-size: 7px;
+  font-size:
+    clamp(6px, 0.9svh, 8px);
 
   text-shadow:
     2px 2px 0
     rgba(70, 45, 120, 0.7);
+
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 
@@ -101,32 +164,71 @@
 
 
 /* ==============================
-   플레이어
+   SCROLL BACKGROUND
 ================================ */
 
+.game-scroll-background {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  bottom: 14%;
+
+  z-index: 0;
+
+  background-repeat: repeat-x;
+
+  background-size:
+    auto 100%;
+
+  background-position:
+    0 bottom;
+
+  image-rendering: pixelated;
+
+  pointer-events: none;
+
+  will-change:
+    background-position;
+}
+
+
 /* ==============================
-   플레이어 전체 영역
+   플레이어
 ================================ */
 
 .game-player {
   position: absolute;
 
   left: 14%;
-  bottom: 22%;
+
+  bottom:
+    calc(
+      var(--ground-base) +
+      var(--world-up) +
+      var(--ground-object-offset)
+    );
 
   z-index: 20;
 
-  width: 64px;
-  height: 64px;
+  width:
+    var(--player-size);
 
-  transform-origin: bottom center;
+  height:
+    var(--player-size);
 
-  will-change: transform;
+  transform-origin:
+    bottom center;
+
+  will-change:
+    transform;
 }
 
 
 /* ==============================
-   캐릭터 이미지 공통
+   캐릭터 이미지
 ================================ */
 
 .game-player-image {
@@ -134,47 +236,53 @@
 
   left: 50%;
 
-  width: 64px;
-  height: 64px;
+  width:
+    var(--player-size);
 
-  transform: translateX(-50%);
+  height:
+    var(--player-size);
+
+  transform:
+    translateX(-50%);
 
   object-fit: contain;
 
   image-rendering: pixelated;
 
   user-select: none;
+  -webkit-user-select: none;
   -webkit-user-drag: none;
+
+  -webkit-touch-callout: none;
 
   pointer-events: none;
 }
 
 
-/* ==============================
-   달리기 이미지 위치 보정
-================================ */
+/* 달리기 */
 
 .game-player.running .game-player-image {
   bottom: -10px;
 }
 
 
-/* ==============================
-   점프 이미지 위치 보정
-================================ */
+/* 점프 */
 
 .game-player.jumping .game-player-image {
   bottom: -10px;
 }
 
 
-/* ==============================
-   슬라이드 이미지 위치 보정
-================================ */
+/* 슬라이드 */
 
 .game-player.sliding .game-player-image {
-  width: 76px;
-  height: 64px;
+  width:
+    calc(
+      var(--player-size) * 1.1875
+    );
+
+  height:
+    var(--player-size);
 
   bottom: -10px;
 }
@@ -190,10 +298,18 @@
   left: 50%;
   bottom: 0;
 
-  width: 34px;
-  height: 48px;
+  width:
+    calc(
+      var(--player-size) * 0.53
+    );
 
-  transform: translateX(-50%);
+  height:
+    calc(
+      var(--player-size) * 0.75
+    );
+
+  transform:
+    translateX(-50%);
 
   pointer-events: none;
 }
@@ -204,14 +320,22 @@
 ================================ */
 
 .game-player.sliding .player-hitbox {
-  width: 55px;
-  height: 20px;
+  width:
+    calc(
+      var(--player-size) * 0.86
+    );
+
+  height:
+    calc(
+      var(--player-size) * 0.31
+    );
 
   bottom: 2px;
 }
 
+
 /* ==============================
-   땅
+   스크롤 바닥
 ================================ */
 
 .game-ground {
@@ -219,39 +343,51 @@
 
   left: 0;
   right: 0;
-  bottom: 0;
 
-  height: 22%;
+  bottom:
+    var(--world-up);
 
-  background:
-    linear-gradient(
-      180deg,
-      #41336b,
-      #241d48
-    );
-}
+  /*
+    바닥 이미지를 위로 올려도
+    윗부분이 너무 쉽게 잘리지 않도록
+    영역을 넉넉하게 확보
+  */
+  height:
+    calc(22% + 5svh);
 
+  z-index: 10;
 
-.ground-line {
-  position: absolute;
+  background-repeat:
+    repeat-x;
 
-  top: 0;
-  left: 0;
+  /*
+    game-gr 이미지 크기
+  */
+  background-size:
+    auto calc(100svh * 0.22);
 
-  width: 100%;
-  height: 5px;
+  background-position-x:
+    0;
 
-  background: #d5bdff;
+  /*
+    바닥 이미지 자체의 세로 위치
+  */
+  background-position-y:
+    var(--ground-image-y);
 
-  box-shadow:
-    0 5px 0 #9c7bd4,
-    0 10px 0
-    rgba(88, 65, 140, 0.8);
+  image-rendering:
+    pixelated;
+
+  pointer-events:
+    none;
+
+  will-change:
+    background-position;
 }
 
 
 /* ==============================
-   장애물
+   장애물 공통
 ================================ */
 
 .game-obstacle {
@@ -264,32 +400,59 @@
   align-items: center;
 
   will-change: left;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  -webkit-touch-callout: none;
 }
 
 
-/* ☁️ 낮은 장애물
-   → 점프 */
+/* ==============================
+   ☁️ 낮은 장애물
+================================ */
 
 .obstacle-cloud {
-  bottom: 22%;
+  bottom:
+    calc(
+      var(--ground-base) +
+      var(--world-up) +
+      var(--ground-object-offset) +
+      var(--obstacle-up)
+    );
 
-  width: 46px;
-  height: 34px;
+  width:
+    clamp(38px, 6svh, 50px);
 
-  font-size: 36px;
+  height:
+    clamp(28px, 4.5svh, 38px);
+
+  font-size:
+    clamp(30px, 5svh, 40px);
 }
 
 
-/* ⭐ 공중 장애물
-   → 슬라이드 */
+/* ==============================
+   ⭐ 공중 장애물
+================================ */
 
 .obstacle-star {
-  bottom: calc(22% + 35px);
+  bottom:
+    calc(
+      var(--ground-base) +
+      var(--world-up) +
+      var(--star-height) +
+      var(--obstacle-up)
+    );
 
-  width: 38px;
-  height: 38px;
+  width:
+    clamp(32px, 5svh, 42px);
 
-  font-size: 30px;
+  height:
+    clamp(32px, 5svh, 42px);
+
+  font-size:
+    clamp(26px, 4svh, 34px);
 
   animation:
     obstacleSpin
@@ -299,16 +462,27 @@
 }
 
 
-/* 🌙 큰 장애물
-   → 점프 */
+/* ==============================
+   🌙 큰 장애물
+================================ */
 
 .obstacle-moon {
-  bottom: 22%;
+  bottom:
+    calc(
+      var(--ground-base) +
+      var(--world-up) +
+      var(--ground-object-offset) +
+      var(--obstacle-up)
+    );
 
-  width: 50px;
-  height: 66px;
+  width:
+    clamp(44px, 7svh, 56px);
 
-  font-size: 48px;
+  height:
+    clamp(58px, 8svh, 72px);
+
+  font-size:
+    clamp(42px, 6svh, 52px);
 
   animation:
     obstacleFloat
@@ -317,20 +491,27 @@
     infinite;
 }
 
+
 /* ==============================
    🛸 슬라이드 전용 장애물
 ================================ */
 
 .obstacle-ufo {
-  /* 슬라이드한 캐릭터 머리 바로 위 정도 */
-  bottom: calc(22% + 31px);
+  bottom:
+    calc(
+      var(--ground-base) +
+      var(--world-up) +
+      var(--ufo-height) +
+      var(--obstacle-up)
+    );
 
-  width: 72px;
+  width:
+    clamp(62px, 9svh, 82px);
 
-  /* 위로는 못 뛰어넘게 판정 길게 */
-  height: 65vh;
+  height: 65svh;
 
-  font-size: 42px;
+  font-size:
+    clamp(36px, 5.5svh, 46px);
 
   display: flex;
   justify-content: center;
@@ -346,7 +527,9 @@
 }
 
 
-/* UFO가 아주 살짝 둥둥 */
+/* ==============================
+   장애물 애니메이션
+================================ */
 
 @keyframes ufoFloat {
   0%,
@@ -390,22 +573,41 @@
 .game-controls {
   position: absolute;
 
-  left: 18px;
-  right: 18px;
-  bottom: 28px;
+  left:
+    clamp(14px, 4vw, 20px);
+
+  right:
+    clamp(14px, 4vw, 20px);
+
+  bottom:
+    calc(
+      var(--controls-up) +
+      env(safe-area-inset-bottom)
+    );
 
   z-index: 70;
 
   display: flex;
 
-  gap: 14px;
+  gap:
+    clamp(10px, 3vw, 16px);
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  -webkit-touch-callout: none;
 }
 
+
+/* ==============================
+   JUMP / SLIDE 버튼
+================================ */
 
 .control-button {
   flex: 1;
 
-  height: 58px;
+  height:
+    var(--control-height);
 
   border:
     2px solid
@@ -418,7 +620,8 @@
 
   font: inherit;
 
-  font-size: 12px;
+  font-size:
+    var(--control-font-size);
 
   cursor: pointer;
 
@@ -436,11 +639,32 @@
   align-items: center;
 
   gap: 5px;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+
+  -webkit-user-drag: none;
+
+  touch-action: manipulation;
+}
+
+
+.control-button * {
+  pointer-events: none;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  -webkit-touch-callout: none;
 }
 
 
 .control-button span {
-  font-size: 6px;
+  font-size:
+    var(--control-label-size);
 }
 
 
@@ -488,6 +712,11 @@
 
   backdrop-filter:
     blur(2px);
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  -webkit-touch-callout: none;
 }
 
 
@@ -495,7 +724,8 @@
   margin:
     0 0 30px;
 
-  font-size: 20px;
+  font-size:
+    clamp(16px, 2.5svh, 22px);
 
   line-height: 1.5;
 
@@ -509,14 +739,16 @@
   margin:
     0 0 10px;
 
-  font-size: 7px;
+  font-size:
+    clamp(6px, 1svh, 8px);
 
   line-height: 1.8;
 }
 
 
 .game-help {
-  margin-top: 10px !important;
+  margin-top:
+    10px !important;
 
   opacity: 0.55;
 }
@@ -542,7 +774,9 @@
   color: white;
 
   font: inherit;
-  font-size: 8px;
+
+  font-size:
+    clamp(7px, 1svh, 9px);
 
   cursor: pointer;
 
@@ -554,6 +788,14 @@
       125,
       0.8
     );
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+
+  touch-action: manipulation;
 }
 
 
@@ -586,6 +828,11 @@
     blur(3px);
 
   text-align: center;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  -webkit-touch-callout: none;
 }
 
 
@@ -593,7 +840,8 @@
   margin:
     0 0 18px;
 
-  font-size: 18px;
+  font-size:
+    clamp(15px, 2.3svh, 20px);
 
   color: #ff9fc5;
 
@@ -612,12 +860,14 @@
   margin:
     0 0 28px;
 
-  font-size: 10px;
+  font-size:
+    clamp(8px, 1.2svh, 11px);
 }
 
 
 .game-over-screen button {
-  min-width: 120px;
+  min-width:
+    clamp(110px, 30vw, 140px);
 
   margin:
     6px 0;
@@ -639,7 +889,9 @@
   color: white;
 
   font: inherit;
-  font-size: 8px;
+
+  font-size:
+    clamp(7px, 1svh, 9px);
 
   cursor: pointer;
 
@@ -651,9 +903,43 @@
       125,
       0.8
     );
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+
+  touch-action: manipulation;
 }
 
 
 .game-over-back {
   opacity: 0.65;
+}
+
+
+/* ==============================
+   모바일 전용 보정
+================================ */
+
+@media (max-width: 600px) {
+  .game-page {
+    /* 캐릭터 + 장애물 + 바닥 전체를 조금 더 위로 */
+    --world-up: 10svh;
+
+    /* JUMP / SLIDE 버튼도 조금 더 위로 */
+    --controls-up: 105px;
+
+    /* 기존 모바일 바닥 이미지 위치 유지 */
+    --ground-image-y: -0.9svh;
+  }
+
+  .game-scroll-background {
+    /* 기존 모바일 배경 크기 그대로 */
+    background-size: auto 80%;
+
+    /* 기존 배경 위치 그대로 */
+    background-position: 0 -2svh;
+  }
 }

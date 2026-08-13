@@ -6,6 +6,10 @@ import run2 from '../assets/run-2.png'
 import jumpImg from '../assets/jump.png'
 import slideImg from '../assets/slide.png'
 
+import gameBg from '../assets/game-bg.png'
+import gameGr from '../assets/game-gr.png'
+
+
 function Game({ onBack }) {
   const [isRunning, setIsRunning] = useState(false)
   const [isGameOver, setIsGameOver] = useState(false)
@@ -17,32 +21,27 @@ function Game({ onBack }) {
 
   const [runFrame, setRunFrame] = useState(0)
 
-  // 화면에 표시할 장애물
   const [obstacles, setObstacles] = useState([])
 
+
   // ==============================
-  // 플레이어 DOM
+  // 플레이어
   // ==============================
 
   const playerRef = useRef(null)
   const playerHitboxRef = useRef(null)
 
-  // ==============================
-  // 플레이어 물리
-  // ==============================
-
   const yRef = useRef(0)
   const velocityRef = useRef(0)
+
 
   // ==============================
   // 슬라이드
   // ==============================
 
-  // 실제 슬라이드 상태
   const isSlidingRef = useRef(false)
-
-  // SLIDE 버튼을 현재 누르고 있는지
   const slidePressedRef = useRef(false)
+
 
   // ==============================
   // 게임 시간 / 거리
@@ -51,6 +50,7 @@ function Game({ onBack }) {
   const gameTimeRef = useRef(0)
   const distanceRef = useRef(0)
 
+
   // ==============================
   // 장애물
   // ==============================
@@ -58,12 +58,25 @@ function Game({ onBack }) {
   const obstaclesRef = useRef([])
   const nextSpawnRef = useRef(1.8)
 
+
   // ==============================
   // 게임 루프
   // ==============================
 
   const animationRef = useRef(null)
   const lastTimeRef = useRef(null)
+
+
+  // ==============================
+  // 배경 / 바닥
+  // ==============================
+
+  const backgroundRef = useRef(null)
+  const backgroundXRef = useRef(0)
+
+  const groundRef = useRef(null)
+  const groundXRef = useRef(0)
+
 
   // ==============================
   // 장애물 종류
@@ -91,8 +104,9 @@ function Game({ onBack }) {
     },
   }
 
+
   // ==============================
-  // 랜덤 장애물 생성
+  // 장애물 생성
   // ==============================
 
   const spawnObstacle = () => {
@@ -120,6 +134,7 @@ function Game({ onBack }) {
     ]
   }
 
+
   // ==============================
   // 게임 시작
   // ==============================
@@ -135,10 +150,22 @@ function Game({ onBack }) {
     distanceRef.current = 0
 
     obstaclesRef.current = []
-
     nextSpawnRef.current = 1.6
 
+    backgroundXRef.current = 0
+    groundXRef.current = 0
+
     lastTimeRef.current = null
+
+    if (backgroundRef.current) {
+      backgroundRef.current.style.backgroundPositionX =
+        '0px'
+    }
+
+    if (groundRef.current) {
+      groundRef.current.style.backgroundPositionX =
+        '0px'
+    }
 
     setScore(0)
 
@@ -152,6 +179,7 @@ function Game({ onBack }) {
     setIsRunning(true)
   }
 
+
   // ==============================
   // 점프
   // ==============================
@@ -159,16 +187,17 @@ function Game({ onBack }) {
   const jump = () => {
     if (!isRunning || isGameOver) return
 
-    // 슬라이드 중이면 점프 금지
+    // 슬라이드 중 점프 불가
     if (isSlidingRef.current) return
 
-    // 공중 점프 금지
+    // 1단 점프
     if (yRef.current > 2) return
 
     velocityRef.current = 690
 
     setIsJumping(true)
   }
+
 
   // ==============================
   // 슬라이드 시작
@@ -177,22 +206,23 @@ function Game({ onBack }) {
   const startSlide = () => {
     if (!isRunning || isGameOver) return
 
-    // 버튼을 누르고 있다는 상태
     slidePressedRef.current = true
 
-    // 이미지 / 충돌박스는 즉시 슬라이드로 전환
     isSlidingRef.current = true
     setIsSliding(true)
 
-    // 공중에서 누르면
-    // 순간이동하지 않고 빠르게 아래로 내려감
+    /*
+      점프 중 SLIDE를 누르면
+      뚝 떨어지는 게 아니라
+      빠르게 슉 내려옴
+    */
     if (yRef.current > 2) {
       velocityRef.current = -950
 
-      // 점프 이미지를 바로 슬라이드 이미지로 변경
       setIsJumping(false)
     }
   }
+
 
   // ==============================
   // 슬라이드 종료
@@ -201,23 +231,21 @@ function Game({ onBack }) {
   const stopSlide = () => {
     slidePressedRef.current = false
 
-    // 땅에 있을 때만 바로 슬라이드 해제
+    /*
+      땅에 있으면 바로 달리기로 복귀
+
+      공중이면 착지할 때
+      게임 루프에서 자동 해제
+    */
     if (yRef.current <= 2) {
       isSlidingRef.current = false
       setIsSliding(false)
     }
-
-    /*
-      공중에서 버튼을 뗀 경우에는
-      당장 달리기 포즈로 바꾸지 않음.
-
-      아래 게임 루프에서
-      착지하는 순간 자동으로 해제됨.
-    */
   }
 
+
   // ==============================
-  // 달리기 프레임
+  // 달리기 이미지 프레임
   // ==============================
 
   useEffect(() => {
@@ -246,6 +274,7 @@ function Game({ onBack }) {
     isJumping,
   ])
 
+
   // ==============================
   // GAME LOOP
   // ==============================
@@ -255,11 +284,9 @@ function Game({ onBack }) {
 
     const gravity = 1800
 
-    // 시작 속도
     const baseSpeed = 44
-
-    // 최대 속도
     const maxSpeed = 145
+
 
     const gameLoop = (time) => {
       if (!lastTimeRef.current) {
@@ -273,14 +300,16 @@ function Game({ onBack }) {
 
       lastTimeRef.current = time
 
+
       // ==============================
-      // 게임 시간
+      // 시간
       // ==============================
 
       gameTimeRef.current += delta
 
+
       // ==============================
-      // 시간이 지날수록 속도 증가
+      // 속도 증가
       // ==============================
 
       const currentSpeed = Math.min(
@@ -291,6 +320,33 @@ function Game({ onBack }) {
 
       const speedMultiplier =
         currentSpeed / baseSpeed
+
+
+      // ==============================
+      // 배경 스크롤
+      // ==============================
+
+      backgroundXRef.current -=
+        currentSpeed * 0.35 * delta
+
+      if (backgroundRef.current) {
+        backgroundRef.current.style.backgroundPositionX =
+          `${backgroundXRef.current}px`
+      }
+
+
+      // ==============================
+      // 바닥 스크롤
+      // ==============================
+
+      groundXRef.current -=
+        currentSpeed * 1.15 * delta
+
+      if (groundRef.current) {
+        groundRef.current.style.backgroundPositionX =
+          `${groundXRef.current}px`
+      }
+
 
       // ==============================
       // 거리
@@ -312,6 +368,7 @@ function Game({ onBack }) {
         return newScore
       })
 
+
       // ==============================
       // 플레이어 물리
       // ==============================
@@ -321,6 +378,7 @@ function Game({ onBack }) {
 
       yRef.current +=
         velocityRef.current * delta
+
 
       // ==============================
       // 착지
@@ -339,12 +397,10 @@ function Game({ onBack }) {
         }
 
         /*
-          공중에서 SLIDE 눌렀다가
-          착지하기 전에 버튼을 뗀 경우
-
-          착지하자마자 달리기로 돌아감
+          점프 중 SLIDE를 눌렀다가
+          착지하기 전에 손을 뗐다면
+          착지와 동시에 달리기로
         */
-
         if (
           isSlidingRef.current &&
           !slidePressedRef.current
@@ -354,11 +410,16 @@ function Game({ onBack }) {
         }
       }
 
+
+      // ==============================
       // 실제 캐릭터 위치
+      // ==============================
+
       if (playerRef.current) {
         playerRef.current.style.transform =
           `translateY(${-yRef.current}px)`
       }
+
 
       // ==============================
       // 장애물 생성
@@ -368,11 +429,6 @@ function Game({ onBack }) {
 
       if (nextSpawnRef.current <= 0) {
         spawnObstacle()
-
-        /*
-          시간이 지날수록
-          장애물 등장 간격 감소
-        */
 
         const difficulty = Math.min(
           gameTimeRef.current / 45,
@@ -392,6 +448,7 @@ function Game({ onBack }) {
           Math.random() * randomGap
       }
 
+
       // ==============================
       // 장애물 이동
       // ==============================
@@ -410,6 +467,7 @@ function Game({ onBack }) {
               obstacle.x > -25
           )
 
+
       // ==============================
       // 충돌 판정
       // ==============================
@@ -420,12 +478,6 @@ function Game({ onBack }) {
       ) {
         const playerRect =
           playerHitboxRef.current.getBoundingClientRect()
-
-        /*
-          player-hitbox 자체를
-          CSS에서 작게 잡았으므로
-          padding은 너무 크게 줄 필요 없음
-        */
 
         const playerPaddingX = 3
         const playerPaddingY = 2
@@ -487,8 +539,9 @@ function Game({ onBack }) {
         }
       }
 
+
       // ==============================
-      // React 화면 업데이트
+      // 화면 업데이트
       // ==============================
 
       setObstacles([
@@ -499,8 +552,10 @@ function Game({ onBack }) {
         requestAnimationFrame(gameLoop)
     }
 
+
     animationRef.current =
       requestAnimationFrame(gameLoop)
+
 
     return () => {
       cancelAnimationFrame(
@@ -510,6 +565,7 @@ function Game({ onBack }) {
       lastTimeRef.current = null
     }
   }, [isRunning, isGameOver])
+
 
   // ==============================
   // PC 키보드
@@ -527,22 +583,25 @@ function Game({ onBack }) {
         jump()
       }
 
-      // 슬라이드
+
+      // ↓ 누르면 슬라이드
       if (event.code === 'ArrowDown') {
         event.preventDefault()
 
-        // 키 반복 입력 방지
         if (event.repeat) return
 
         startSlide()
       }
     }
 
+
     const handleKeyUp = (event) => {
+      // ↓ 떼면 슬라이드 종료
       if (event.code === 'ArrowDown') {
         stopSlide()
       }
     }
+
 
     window.addEventListener(
       'keydown',
@@ -553,6 +612,7 @@ function Game({ onBack }) {
       'keyup',
       handleKeyUp
     )
+
 
     return () => {
       window.removeEventListener(
@@ -567,8 +627,9 @@ function Game({ onBack }) {
     }
   }, [isRunning, isGameOver])
 
+
   // ==============================
-  // 현재 캐릭터 이미지
+  // 캐릭터 이미지
   // ==============================
 
   let playerImage = run1
@@ -580,6 +641,7 @@ function Game({ onBack }) {
   } else if (runFrame === 1) {
     playerImage = run2
   }
+
 
   // ==============================
   // 화면
@@ -601,6 +663,7 @@ function Game({ onBack }) {
           ← BACK
         </button>
 
+
         <div className="game-status">
 
           <div className="game-score">
@@ -612,16 +675,30 @@ function Game({ onBack }) {
 
       </div>
 
+
       {/* =========================
           게임 공간
       ========================== */}
 
       <div className="game-world">
 
+        {/* 움직이는 배경 */}
+
+        <div
+          ref={backgroundRef}
+          className="game-scroll-background"
+          style={{
+            backgroundImage:
+              `url(${gameBg})`,
+          }}
+        />
+
+
         {/* 플레이어 */}
 
         <div
           ref={playerRef}
+
           className={`
             game-player
             ${
@@ -633,6 +710,7 @@ function Game({ onBack }) {
             }
           `}
         >
+
           <img
             className="game-player-image"
             src={playerImage}
@@ -643,7 +721,9 @@ function Game({ onBack }) {
             ref={playerHitboxRef}
             className="player-hitbox"
           />
+
         </div>
+
 
         {/* 장애물 */}
 
@@ -654,7 +734,10 @@ function Game({ onBack }) {
           return (
             <div
               key={obstacle.id}
-              data-obstacle-id={obstacle.id}
+
+              data-obstacle-id={
+                obstacle.id
+              }
 
               className={`
                 game-obstacle
@@ -670,16 +753,25 @@ function Game({ onBack }) {
           )
         })}
 
-        {/* 땅 */}
 
-        <div className="game-ground">
-          <div className="ground-line" />
-        </div>
+        {/* 움직이는 바닥 */}
+
+        <div
+          ref={groundRef}
+
+          className="game-ground"
+
+          style={{
+            backgroundImage:
+              `url(${gameGr})`,
+          }}
+        />
 
       </div>
 
+
       {/* =========================
-          모바일 조작 버튼
+          JUMP / SLIDE 버튼
       ========================== */}
 
       {isRunning && (
@@ -692,7 +784,9 @@ function Game({ onBack }) {
               control-button
               jump-button
             "
+
             onPointerDown={(event) => {
+              event.preventDefault()
               event.stopPropagation()
 
               jump()
@@ -705,6 +799,7 @@ function Game({ onBack }) {
             </span>
           </button>
 
+
           {/* SLIDE */}
 
           <button
@@ -712,14 +807,10 @@ function Game({ onBack }) {
               control-button
               slide-button
             "
-            onPointerDown={(event) => {
-              event.stopPropagation()
 
-              /*
-                pointer capture를 걸어두면
-                손가락이 버튼 밖으로 살짝 나가도
-                pointerUp을 안정적으로 받을 수 있음
-              */
+            onPointerDown={(event) => {
+              event.preventDefault()
+              event.stopPropagation()
 
               event.currentTarget.setPointerCapture(
                 event.pointerId
@@ -729,12 +820,17 @@ function Game({ onBack }) {
             }}
 
             onPointerUp={(event) => {
+              event.preventDefault()
               event.stopPropagation()
 
               stopSlide()
             }}
 
             onPointerCancel={() => {
+              stopSlide()
+            }}
+
+            onLostPointerCapture={() => {
               stopSlide()
             }}
           >
@@ -747,6 +843,7 @@ function Game({ onBack }) {
 
         </div>
       )}
+
 
       {/* =========================
           START
@@ -779,6 +876,7 @@ function Game({ onBack }) {
 
         </div>
       )}
+
 
       {/* =========================
           GAME OVER
