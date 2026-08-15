@@ -943,3 +943,65 @@
     background-position: 0 -2svh;
   }
 }
+
+/* ==============================
+   화면 전체 픽셀 스캔 효과
+================================ */
+
+.pixel-screen-overlay {
+  position: absolute;
+  inset: 0;
+
+  /* 게임 UI보다 위 */
+  z-index: 200;
+
+  pointer-events: none;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 1px,
+      rgba(20, 15, 70, 0.018) 1px,
+      rgba(20, 15, 70, 0.018) 3px
+    ),
+
+    repeating-linear-gradient(
+      to right,
+      transparent 0px,
+      transparent 2px,
+      rgba(30, 20, 90, 0.012) 2px,
+      rgba(30, 20, 90, 0.012) 3px
+    );
+
+  opacity: 0.55;
+
+  animation:
+    pixelScreenFlicker
+    4s
+    steps(2)
+    infinite;
+}
+
+
+/* 정말 미세하게 화면 밝기가 변함 */
+
+@keyframes pixelScreenFlicker {
+  0%,
+  92%,
+  100% {
+    opacity: 0.5;
+  }
+
+  94% {
+    opacity: 0.62;
+  }
+
+  96% {
+    opacity: 0.47;
+  }
+
+  98% {
+    opacity: 0.57;
+  }
+}

@@ -910,6 +910,8 @@ function Game({ onBack }) {
         </div>
       )}
 
+      <div className="pixel-screen-overlay" />
+
     </section>
   )
 }
