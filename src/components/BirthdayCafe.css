@@ -1,15 +1,124 @@
-.cafe-header {
-  text-align: center;
-  margin-bottom: 20px;
+/* ==============================
+   PAGE
+================================ */
+
+.birthday-cafe {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding:
+    36px
+    14px
+    54px;
+
+  overflow: hidden;
+
+  background: transparent;
 }
 
-.cafe-content {
+
+/* ==============================
+   MAIN PANEL
+================================ */
+
+.cafe-panel {
+  width: min(88%, 330px);
+
+  height:
+    min(76svh, 560px);
+
   box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 4px;
+
+  background: #8cc4ff;
+
+  border:
+    2px solid #dcefff;
+
+  overflow: hidden;
+}
+
+
+/* ==============================
+   TOP BAR
+================================ */
+
+.cafe-panel-top {
+  flex: none;
+
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  background: #69abfc;
+
+  color: white;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 8px;
+}
+
+
+/* ==============================
+   CONTENT
+================================ */
+
+.cafe-content {
+  flex: 1;
+
+  min-height: 0;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding:
+    20px
+    16px
+    18px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  background:
+    rgba(247, 252, 255, 0.96);
+}
+
+
+/* ==============================
+   HEADER
+================================ */
+
+.cafe-header {
+  text-align: center;
+
+  margin-bottom: 20px;
 }
 
 
 .cafe-small {
-  margin: 0 0 7px;
+  margin:
+    0 0
+    7px;
 
   font-family:
     'Press Start 2P',
@@ -22,8 +131,28 @@
 }
 
 
+.cafe-title {
+  margin: 0;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 31px;
+
+  line-height: 1.1;
+
+  color: #69abfc;
+
+  text-shadow:
+    2px 2px 0
+    rgba(205, 232, 255, 0.9);
+}
+
+
 .cafe-subtitle {
-  margin: 7px 0 0;
+  margin:
+    7px 0 0;
 
   font-family:
     'DungGeunMo',
@@ -35,28 +164,36 @@
 }
 
 
+/* ==============================
+   INFO BOX
+================================ */
+
 .cafe-info-box {
   position: relative;
 
   width: 100%;
+
   box-sizing: border-box;
 
   margin-top: 17px;
 
   padding:
-    17px 13px
+    17px
+    13px
     12px;
 
   border:
     2px solid #b7dcf7;
 
-  background:
-    #eaf5ff;
+  background: #eaf5ff;
 
-  color:
-    #4f7da5;
+  color: #4f7da5;
 }
 
+
+/* ==============================
+   INFO LABEL
+================================ */
 
 .cafe-info-label {
   position: absolute;
@@ -65,7 +202,8 @@
   left: 10px;
 
   padding:
-    3px 7px;
+    3px
+    7px;
 
   background: #69abfc;
 
@@ -78,6 +216,10 @@
   font-size: 5px;
 }
 
+
+/* ==============================
+   INFO VALUE
+================================ */
 
 .cafe-info-value {
   margin: 0;
@@ -92,9 +234,14 @@
 }
 
 
+/* ==============================
+   PLACE
+================================ */
+
 .cafe-place-name {
   margin:
-    0 0 3px;
+    0 0
+    3px;
 
   text-align: center;
 
@@ -118,4 +265,236 @@
   font-size: 14px;
 
   color: #7697b2;
+}
+
+
+/* ==============================
+   BACK
+================================ */
+
+.cafe-back {
+  position: absolute;
+
+  left: 50%;
+  bottom: 12px;
+
+  transform:
+    translateX(-50%);
+
+  z-index: 50;
+
+  padding:
+    8px
+    14px;
+
+  border: 0;
+
+  background: transparent;
+
+  color:
+    rgba(255, 255, 255, 0.65);
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 6px;
+
+  cursor: pointer;
+}
+
+/* ==============================
+   PLACE BUTTONS
+================================ */
+
+.cafe-place-buttons {
+  display: flex;
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: 10px;
+}
+
+
+.cafe-mini-button {
+  min-width: 64px;
+
+  padding:
+    7px
+    10px;
+
+  border:
+    2px solid #69abfc;
+
+  background:
+    #d8efff;
+
+  color:
+    #4d8dc5;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 5px;
+
+  box-shadow:
+    2px 2px 0
+    #9acaf0;
+
+  cursor: pointer;
+}
+
+
+.cafe-mini-button:active {
+  transform:
+    translate(2px, 2px);
+
+  box-shadow: none;
+}
+
+
+/* ==============================
+   EVENT INFO
+================================ */
+
+.cafe-event {
+  margin-top: 22px;
+}
+
+
+.cafe-event-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-bottom: 10px;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 6px;
+
+  color:
+    #69abfc;
+}
+
+
+.cafe-event-list {
+  border:
+    2px solid
+    #b7dcf7;
+
+  background:
+    #eef8ff;
+}
+
+
+.cafe-event-row {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+    8px
+    10px;
+
+  border-bottom:
+    1px dashed
+    #bddcf2;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 14px;
+
+  color:
+    #5f7f99;
+}
+
+
+.cafe-event-row:last-child {
+  border-bottom: 0;
+}
+
+
+.cafe-event-dot {
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 5px;
+
+  color:
+    #69abfc;
+}
+
+
+/* ==============================
+   NOTICE
+================================ */
+
+.cafe-notice {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 14px;
+
+  padding:
+    9px
+    10px;
+
+  background:
+    rgba(218, 239, 255, 0.65);
+
+  border-left:
+    3px solid
+    #69abfc;
+}
+
+
+.cafe-notice-icon {
+  flex: none;
+
+  width: 18px;
+  height: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    #69abfc;
+
+  color: white;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 7px;
+}
+
+
+.cafe-notice p {
+  margin: 0;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+
+  color:
+    #7292aa;
 }

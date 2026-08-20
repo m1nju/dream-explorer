@@ -1,4 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import dogStar from '../assets/dog-star.png'
 
@@ -6,32 +10,29 @@ import './Intro.css'
 
 
 function Intro({ onEnter }) {
-  const [started, setStarted] = useState(false)
-  const [particles, setParticles] = useState([])
+  const [started, setStarted] =
+    useState(false)
 
-  const dogRef = useRef(null)
+  const [particles, setParticles] =
+    useState([])
+
+  const dogRef =
+    useRef(null)
 
 
-  // ==============================
-  // 강아지 비행 파티클
-  // ==============================
+  /* ==============================
+     강아지 비행 파티클
+  ============================== */
 
   useEffect(() => {
-    /*
-      강아지를 클릭해서
-      타이포 화면으로 넘어가면
-      더 이상 비행 파티클 생성 안 함
-    */
-
     if (started) return
 
-
-    const startTime = Date.now()
+    const startTime =
+      Date.now()
 
 
     const particleInterval =
       setInterval(() => {
-
         const dog =
           dogRef.current
 
@@ -39,13 +40,9 @@ function Intro({ onEnter }) {
 
 
         const elapsed =
-          Date.now() - startTime
+          Date.now() -
+          startTime
 
-
-        /*
-          강아지 비행시간
-          CSS dogFlight와 동일
-        */
 
         if (elapsed > 3200) {
           clearInterval(
@@ -59,8 +56,6 @@ function Intro({ onEnter }) {
         const rect =
           dog.getBoundingClientRect()
 
-
-        // 파티클 색상
 
         const colors = [
           '#ff9fc5',
@@ -88,29 +83,20 @@ function Intro({ onEnter }) {
           Math.random()
 
 
-        /*
-          기본:
-          작은 픽셀
-        */
+        let type =
+          'pixel'
 
-        let type = 'pixel'
-
-
-        /*
-          일부는 십자 별
-        */
 
         if (random > 0.82) {
-          type = 'cross'
+          type =
+            'cross'
         }
 
-
-        /*
-          일부는 작은 별똥별
-        */
-
-        else if (random > 0.62) {
-          type = 'mini-comet'
+        else if (
+          random > 0.62
+        ) {
+          type =
+            'mini-comet'
         }
 
 
@@ -120,11 +106,6 @@ function Intro({ onEnter }) {
 
           type,
           color,
-
-
-          /*
-            강아지 별 뒤쪽에 생성
-          */
 
           x:
             rect.left +
@@ -137,40 +118,33 @@ function Intro({ onEnter }) {
             Math.random() * 16 -
             8,
 
-
-          /*
-            파티클 크기
-          */
-
           size:
             type === 'cross'
               ? Math.floor(
-                  Math.random() * 3 + 3
+                  Math.random() *
+                    3 +
+                    3
                 )
               : Math.floor(
-                  Math.random() * 3 + 2
+                  Math.random() *
+                    3 +
+                    2
                 ),
 
-
-          /*
-            사라질 때
-            살짝 흩어지는 방향
-          */
-
           offsetX:
-            Math.random() * 28 - 14,
+            Math.random() *
+              28 -
+            14,
 
           offsetY:
-            Math.random() * 28 - 14,
-
-
-          /*
-            파티클마다
-            사라지는 속도 조금씩 다르게
-          */
+            Math.random() *
+              28 -
+            14,
 
           duration:
-            Math.random() * 0.4 + 0.7,
+            Math.random() *
+              0.4 +
+            0.7,
         }
 
 
@@ -181,10 +155,6 @@ function Intro({ onEnter }) {
           ]
         )
 
-
-        /*
-          사용 끝난 파티클 제거
-        */
 
         setTimeout(() => {
           setParticles(
@@ -208,10 +178,6 @@ function Intro({ onEnter }) {
 
   }, [started])
 
-
-  // ==============================
-  // 화면
-  // ==============================
 
   return (
     <section className="intro-screen">
@@ -264,7 +230,7 @@ function Intro({ onEnter }) {
 
 
       {/* =========================
-          클릭 전 : 강아지
+          클릭 전
       ========================== */}
 
       {!started && (
@@ -276,6 +242,8 @@ function Intro({ onEnter }) {
 
           <button
             className="dog-button"
+
+            type="button"
 
             onClick={() =>
               setStarted(true)
@@ -290,11 +258,10 @@ function Intro({ onEnter }) {
               src={dogStar}
 
               alt="별을 타고 있는 강아지"
+
+              draggable="false"
             />
 
-
-            {/* 중앙 도착 후
-                주변에 떠다니는 픽셀 */}
 
             <div className="idle-particles">
 
@@ -332,50 +299,62 @@ function Intro({ onEnter }) {
 
 
       {/* =========================
-          클릭 후 : 타이포
+          클릭 후 타이포
       ========================== */}
 
       {started && (
+  <div className="intro-typography">
 
-        <div className="intro-typography">
-
-          <p className="intro-line line-1">
-            상상만 했던 너의 소원은 뭐야?
-          </p>
-
-
-          <p className="intro-line line-2">
-            그 꿈이 이루어지는 오늘!
-          </p>
-
-
-          <h1 className="intro-line line-3">
-
-            상상이 현실이 되는
-            <br />
-
-            <strong>
-              상현이날
-            </strong>
-
-          </h1>
+    <div className="intro-line line-1">
+      <p
+        className="dream-text dream-text-small"
+        data-text="상상만 했던 너의 소원은 뭐야?"
+      >
+        상상만 했던 너의 소원은 뭐야?
+      </p>
+    </div>
 
 
-          <button
-            className="
-              enter-button
-              intro-line
-              line-4
-            "
+    <div className="intro-line line-2">
+      <p
+        className="dream-text dream-text-medium"
+        data-text="그 꿈이 이루어지는 오늘!"
+      >
+        그 꿈이 이루어지는 오늘!
+      </p>
+    </div>
 
-            onClick={onEnter}
-          >
-            ENTER DREAM
-          </button>
 
-        </div>
+    <div className="intro-line line-3">
 
-      )}
+      <p
+        className="dream-text dream-text-medium"
+        data-text="상상이 현실이 되는"
+      >
+        상상이 현실이 되는
+      </p>
+
+
+      <h1
+        className="dream-text dream-main-title"
+        data-text="상현이날"
+      >
+        상현이날
+      </h1>
+
+    </div>
+
+
+    <button
+      className="enter-button intro-line line-4"
+      type="button"
+      onClick={onEnter}
+    >
+      ENTER DREAM
+    </button>
+
+  </div>
+)}
 
     </section>
   )

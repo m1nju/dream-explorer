@@ -17,7 +17,7 @@
 
 
 /* ==============================
-   강아지 비행
+   DOG FLIGHT
 ================================ */
 
 .dog-flight {
@@ -77,9 +77,6 @@
       rotate(5deg)
       scale(0.96);
   }
-
-
-  /* 루프 진입 */
 
   36% {
     transform:
@@ -177,9 +174,6 @@
       scale(1);
   }
 
-
-  /* 루프 종료 → 중앙 */
-
   85% {
     transform:
       translate(-50%, -50%)
@@ -224,12 +218,13 @@
 
 
 /* ==============================
-   강아지 버튼
+   DOG BUTTON
 ================================ */
 
 .dog-button {
-  border: 0;
+  position: relative;
 
+  border: 0;
   padding: 0;
 
   background: transparent;
@@ -248,6 +243,9 @@
     ease-in-out
     3.2s
     infinite;
+
+  -webkit-tap-highlight-color:
+    transparent;
 }
 
 
@@ -276,7 +274,7 @@
 
 
 /* ==============================
-   강아지 이미지
+   DOG IMAGE
 ================================ */
 
 .dog-star {
@@ -286,13 +284,12 @@
   height: auto;
 
   user-select: none;
-
   -webkit-user-drag: none;
 }
 
 
 /* ==============================
-   강아지 비행 궤적
+   TRAIL
 ================================ */
 
 .trail-layer {
@@ -307,10 +304,6 @@
   pointer-events: none;
 }
 
-
-/* ==============================
-   PIXEL TRAIL
-================================ */
 
 .trail-particle {
   position: absolute;
@@ -327,7 +320,7 @@
 }
 
 
-/* 작은 네모 픽셀 */
+/* 작은 픽셀 */
 
 .trail-particle.pixel {
   width:
@@ -338,14 +331,10 @@
 
   background:
     var(--particle-color);
-
-  box-shadow:
-    0 0 0 1px
-    rgba(255, 255, 255, 0.08);
 }
 
 
-/* 픽셀 십자 별 */
+/* 십자 별 */
 
 .trail-particle.cross {
   width:
@@ -363,7 +352,7 @@
 
 
 .trail-particle.cross::before {
-  content: "";
+  content: '';
 
   position: absolute;
 
@@ -386,7 +375,7 @@
 
 
 .trail-particle.cross::after {
-  content: "";
+  content: '';
 
   position: absolute;
 
@@ -408,7 +397,7 @@
 }
 
 
-/* 작은 픽셀 별똥별 */
+/* 작은 별똥별 */
 
 .trail-particle.mini-comet {
   width:
@@ -437,15 +426,6 @@
       color-mix(
         in srgb,
         var(--particle-color) 65%,
-        transparent
-      ),
-
-    calc(var(--pixel-size) * -4)
-      calc(var(--pixel-size) * 4)
-      0
-      color-mix(
-        in srgb,
-        var(--particle-color) 35%,
         transparent
       );
 }
@@ -483,7 +463,7 @@
 
 
 /* ==============================
-   클릭 안내 문구
+   CLICK GUIDE
 ================================ */
 
 .dog-guide {
@@ -498,9 +478,7 @@
     translateX(-50%);
 
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
 
   gap: 5px;
@@ -613,154 +591,7 @@
 
 
 /* ==============================
-   타이포
-================================ */
-
-.intro-typography {
-  position: relative;
-
-  z-index: 20;
-
-  text-align: center;
-
-  color: white;
-}
-
-
-.intro-line {
-  opacity: 0;
-
-  transform:
-    translateY(20px)
-    scale(0.96);
-
-  animation:
-    textAppear
-    0.8s
-    ease
-    forwards;
-}
-
-
-.line-1 {
-  animation-delay: 0.2s;
-
-  font-size: 22px;
-
-  margin-bottom: 25px;
-}
-
-
-.line-2 {
-  animation-delay: 0.8s;
-
-  font-size: 15px;
-
-  letter-spacing: 2px;
-
-  margin-bottom: 35px;
-}
-
-
-.line-3 {
-  animation-delay: 1.4s;
-
-  font-size:
-    clamp(
-      34px,
-      6vw,
-      70px
-    );
-
-  line-height: 1.15;
-
-  font-weight: 300;
-
-  margin:
-    0
-    0
-    45px;
-}
-
-
-.line-3 strong {
-  font-size: 1.15em;
-
-  font-weight: 600;
-}
-
-
-.line-4 {
-  animation-delay: 2.1s;
-}
-
-
-@keyframes textAppear {
-
-  to {
-    opacity: 1;
-
-    transform:
-      translateY(0)
-      scale(1);
-  }
-}
-
-
-/* ==============================
-   ENTER DREAM
-================================ */
-
-.enter-button {
-  padding:
-    14px
-    32px;
-
-  border:
-    1px solid
-    rgba(255, 255, 255, 0.7);
-
-  border-radius: 999px;
-
-  background:
-    rgba(255, 255, 255, 0.05);
-
-  backdrop-filter:
-    blur(10px);
-
-  color: white;
-
-  font-size: 12px;
-
-  letter-spacing: 4px;
-
-  cursor: pointer;
-
-  transition:
-    background 0.3s ease,
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-
-.enter-button:hover {
-  transform:
-    translateY(-3px);
-
-  background:
-    rgba(255, 255, 255, 0.15);
-
-  box-shadow:
-    0 0 20px
-    rgba(163, 181, 255, 0.3),
-
-    0 0 40px
-    rgba(187, 135, 255, 0.15);
-}
-
-
-/* ==============================
-   강아지 IDLE 픽셀 파티클
+   IDLE PIXELS
 ================================ */
 
 .idle-particles {
@@ -791,8 +622,6 @@
 }
 
 
-/* 기본 픽셀 */
-
 .idle-pixel {
   position: absolute;
 
@@ -816,8 +645,6 @@
     infinite;
 }
 
-
-/* 각각 위치 */
 
 .idle-1 {
   left: 12%;
@@ -908,4 +735,632 @@
       translate(-2px, -12px)
       scale(0.7);
   }
+}
+
+
+/* ==================================================
+   TYPOGRAPHY
+================================================== */
+
+.intro-typography {
+  position: relative;
+
+  z-index: 20;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding:
+    0 16px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  transform:
+    translateY(-8px);
+}
+
+
+/* ==============================
+   BACK GLOW
+================================ */
+
+.intro-typography::before {
+  content: '';
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width:
+    min(90%, 340px);
+
+  height: 300px;
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+
+      rgba(255, 203, 238, 0.18)
+      0%,
+
+      rgba(203, 186, 255, 0.12)
+      40%,
+
+      rgba(138, 194, 255, 0.05)
+      68%,
+
+      transparent
+      80%
+    );
+
+  filter:
+    blur(28px);
+
+  z-index: -1;
+
+  pointer-events: none;
+}
+
+
+/* ==============================
+   APPEAR
+================================ */
+
+.intro-line {
+  opacity: 0;
+
+  transform:
+    translateY(18px)
+    scale(0.96);
+
+  animation:
+    introTextAppear
+    0.75s
+    cubic-bezier(
+      0.22,
+      1,
+      0.36,
+      1
+    )
+    forwards;
+}
+
+
+@keyframes introTextAppear {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translateY(18px)
+      scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* ==================================================
+   ★ 실제 컬러 글자
+================================================== */
+
+.dream-text {
+  position: relative;
+
+  z-index: 1;
+
+  isolation: isolate;
+
+  display: inline-block;
+
+  margin: 0;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-weight: 700;
+
+  color: transparent;
+
+  -webkit-text-fill-color:
+    transparent;
+
+  -webkit-text-stroke: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+
+      #fff1fa 0%,
+
+      #ffd5ef 17%,
+
+      #f7b7df 36%,
+
+      #e9b0ed 55%,
+
+      #c8b1fa 76%,
+
+      #97a5ee 100%
+    );
+
+  -webkit-background-clip:
+    text;
+
+  background-clip:
+    text;
+
+  /*
+    여기에는 흰 테두리 없음.
+    아래쪽 입체감만.
+  */
+
+  filter:
+    drop-shadow(
+      0 3px 0
+      rgba(195, 172, 232, 0.82)
+    )
+
+    drop-shadow(
+      0 5px 0
+      rgba(117, 153, 220, 0.64)
+    )
+
+    drop-shadow(
+      0 7px 6px
+      rgba(70, 94, 166, 0.18)
+    );
+}
+
+
+/* ==================================================
+   ★ 흰색 외곽선용 복제 글자
+
+   실제 컬러 글자 뒤에만 존재함.
+   내부 색을 절대 덮지 않음.
+================================================== */
+
+.dream-text::before {
+  content:
+    attr(data-text);
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  z-index: -1;
+
+  width: max-content;
+
+  font: inherit;
+
+  font-weight: inherit;
+
+  line-height: inherit;
+
+  letter-spacing: inherit;
+
+  color: #ffffff;
+
+  -webkit-text-fill-color:
+    #ffffff;
+
+  background: none;
+
+  /*
+    글자를 아주 살짝 크게 해서
+    가장자리만 바깥으로 보이게.
+  */
+
+  transform:
+    translate(-50%, -50%)
+    scale(1.035);
+
+  transform-origin:
+    center;
+
+  pointer-events: none;
+}
+
+
+/* ==============================
+   LINE 1
+================================ */
+
+.line-1 {
+  animation-delay:
+    0.15s;
+
+  margin-bottom:
+    22px;
+}
+
+
+.dream-text-small {
+  white-space: nowrap;
+
+  font-size:
+    clamp(
+      16px,
+      2.35svh,
+      21px
+    );
+
+  line-height: 1.12;
+
+  letter-spacing:
+    -0.3px;
+}
+
+
+/* ==============================
+   LINE 2
+================================ */
+
+.line-2 {
+  animation-delay:
+    0.75s;
+
+  margin-bottom:
+    28px;
+}
+
+
+.dream-text-medium {
+  white-space: nowrap;
+
+  font-size:
+    clamp(
+      18px,
+      2.65svh,
+      23px
+    );
+
+  line-height: 1.1;
+
+  letter-spacing:
+    -0.5px;
+}
+
+
+/* ==============================
+   LINE 3
+================================ */
+
+.line-3 {
+  animation-delay:
+    1.35s;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom:
+    36px;
+}
+
+
+/* 상상이 현실이 되는 */
+
+.dream-pretitle {
+  white-space: nowrap;
+
+  font-size:
+    clamp(
+      20px,
+      2.9svh,
+      25px
+    );
+
+  line-height: 1;
+
+  letter-spacing:
+    -0.7px;
+}
+
+
+/* ==============================
+   상현이날
+================================ */
+
+.dream-main-title {
+  position: relative;
+
+  font-size:
+    clamp(
+      52px,
+      7.4svh,
+      72px
+    );
+
+  line-height: 0.93;
+
+  letter-spacing:
+    -3px;
+
+  /*
+    메인 타이틀은
+    안쪽 컬러를 더 진하게
+  */
+
+  background:
+    linear-gradient(
+      180deg,
+
+      #fff2fa 0%,
+
+      #ffd1eb 16%,
+
+      #f5acd8 34%,
+
+      #e8a7e7 51%,
+
+      #c2a7f4 72%,
+
+      #8e9ce7 100%
+    );
+
+  -webkit-background-clip:
+    text;
+
+  background-clip:
+    text;
+
+  -webkit-text-fill-color:
+    transparent;
+
+  color: transparent;
+
+  filter:
+    drop-shadow(
+      0 4px 0
+      #c4aae7
+    )
+
+    drop-shadow(
+      0 7px 0
+      #92a5e2
+    )
+
+    drop-shadow(
+      0 10px 8px
+      rgba(65, 85, 157, 0.22)
+    );
+}
+
+
+/*
+  메인 타이틀은
+  흰 외곽을 조금 더 보이게
+*/
+
+.dream-main-title::before {
+  transform:
+    translate(-50%, -50%)
+    scale(1.045);
+}
+
+
+/* ==============================
+   TITLE SPARKLE
+================================ */
+
+.dream-main-title::after {
+  content: '✦';
+
+  position: absolute;
+
+  right: -14px;
+  top: -12px;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 8px;
+
+  color:
+    #fff1a8;
+
+  -webkit-text-fill-color:
+    #fff1a8;
+
+  text-shadow:
+    0 0 7px
+    rgba(255, 236, 148, 0.8);
+
+  animation:
+    titleSparkle
+    1.5s
+    steps(3)
+    infinite;
+}
+
+
+@keyframes titleSparkle {
+
+  0%,
+  100% {
+    opacity: 0.35;
+
+    transform:
+      scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      scale(1.25);
+  }
+}
+
+
+/* ==============================
+   ENTER BUTTON
+================================ */
+
+.line-4 {
+  animation-delay:
+    2.05s;
+}
+
+
+.enter-button {
+  position: relative;
+
+  min-width: 150px;
+
+  padding:
+    12px 24px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.82);
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(255, 255, 255, 0.11);
+
+  backdrop-filter:
+    blur(8px);
+
+  color: white;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size:
+    clamp(
+      6px,
+      1svh,
+      8px
+    );
+
+  line-height: 1.3;
+
+  letter-spacing:
+    1.6px;
+
+  box-shadow:
+    0 3px 0
+    rgba(139, 145, 218, 0.35),
+
+    0 6px 10px
+    rgba(88, 102, 176, 0.15);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+
+.enter-button:hover {
+  transform:
+    translateY(-2px);
+
+  background:
+    rgba(255, 255, 255, 0.2);
+}
+
+
+.enter-button:active {
+  transform:
+    translateY(2px);
+}
+
+
+/* ==============================
+   MOBILE
+================================ */
+
+@media (max-width: 600px) {
+
+  .dog-star {
+    width: 145px;
+  }
+
+
+  .intro-typography {
+    padding:
+      0 12px;
+
+    transform:
+      translateY(-6px);
+  }
+
+
+  .dream-text-small {
+    font-size:
+      clamp(
+        15px,
+        2.15svh,
+        18px
+      );
+  }
+
+
+  .dream-text-medium {
+    font-size:
+      clamp(
+        17px,
+        2.4svh,
+        20px
+      );
+  }
+
+
+  .dream-pretitle {
+    font-size:
+      clamp(
+        18px,
+        2.6svh,
+        22px
+      );
+  }
+
+
+  .dream-main-title {
+    font-size:
+      clamp(
+        48px,
+        6.7svh,
+        62px
+      );
+  }
+
+
+  .enter-button {
+    min-width: 145px;
+  }
+
 }
