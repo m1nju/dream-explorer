@@ -1,0 +1,1321 @@
+/* ==============================
+   LUCKY HYEONI
+================================ */
+
+.lucky-hyeoni {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding:
+    clamp(30px, 5svh, 52px)
+    12px
+    clamp(22px, 3svh, 32px);
+
+  color: white;
+
+  background: transparent;
+}
+
+
+/* ==============================
+   HEADER
+================================ */
+
+.lucky-header {
+  position: relative;
+
+  z-index: 20;
+
+  flex: none;
+
+  width: 100%;
+
+  text-align: center;
+}
+
+
+.lucky-small {
+  margin:
+    0 0
+    clamp(7px, 1.2svh, 10px);
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size:
+    clamp(5px, 0.8svh, 7px);
+
+  letter-spacing: 1px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.55
+    );
+}
+
+
+.lucky-title {
+  margin: 0;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size:
+    clamp(
+      18px,
+      3svh,
+      26px
+    );
+
+  line-height: 1.4;
+
+  color: white;
+
+  text-shadow:
+    2px 2px 0
+    rgba(
+      139,
+      151,
+      219,
+      0.65
+    );
+}
+
+
+/* ==============================
+   등장 전 영역
+================================ */
+
+.lucky-before-summon {
+  position: relative;
+
+  z-index: 10;
+
+  flex: 1;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* 안내문 */
+
+.lucky-guide {
+  margin:
+    0 0
+    clamp(
+      18px,
+      3svh,
+      28px
+    );
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size:
+    clamp(
+      14px,
+      2svh,
+      17px
+    );
+
+  line-height: 1.5;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+}
+
+
+/* ==============================
+   LAMP
+================================ */
+
+.lamp-area {
+  position: relative;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transform:
+    translateY(
+      clamp(
+        14px,
+        2.5svh,
+        24px
+      )
+    );
+}
+
+
+.magic-lamp {
+  display: block;
+
+  width: 42%;
+  max-width: 190px;
+
+  height: auto;
+
+  user-select: none;
+  -webkit-user-drag: none;
+
+  touch-action: none;
+
+  filter:
+    drop-shadow(
+      0 0 12px
+      rgba(
+        218,
+        205,
+        255,
+        0.25
+      )
+    );
+}
+
+
+/* ==============================
+   LAMP SPARKLES
+================================ */
+
+.lamp-sparkles {
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+}
+
+
+.lamp-sparkle {
+  position: absolute;
+
+  color: #fff6b5;
+
+  font-size:
+    clamp(
+      8px,
+      1.6svh,
+      13px
+    );
+
+  opacity: 0;
+
+  text-shadow:
+    0 0 6px
+      rgba(
+        255,
+        245,
+        180,
+        0.8
+      ),
+
+    0 0 12px
+      rgba(
+        190,
+        170,
+        255,
+        0.45
+      );
+
+  animation:
+    lampSparklePop
+    1.2s
+    ease-in-out
+    infinite;
+}
+
+
+.sparkle-0 {
+  left: 24%;
+  top: 18%;
+}
+
+.sparkle-1 {
+  left: 72%;
+  top: 20%;
+
+  animation-delay: -0.2s;
+}
+
+.sparkle-2 {
+  left: 18%;
+  top: 55%;
+
+  animation-delay: -0.4s;
+}
+
+.sparkle-3 {
+  left: 78%;
+  top: 60%;
+
+  animation-delay: -0.6s;
+}
+
+.sparkle-4 {
+  left: 36%;
+  top: 5%;
+
+  animation-delay: -0.8s;
+}
+
+.sparkle-5 {
+  left: 62%;
+  top: 8%;
+
+  animation-delay: -1s;
+}
+
+.sparkle-6 {
+  left: 30%;
+  top: 76%;
+
+  animation-delay: -0.3s;
+}
+
+.sparkle-7 {
+  left: 68%;
+  top: 74%;
+
+  animation-delay: -0.7s;
+}
+
+
+@keyframes lampSparklePop {
+
+  0%,
+  100% {
+    opacity: 0.15;
+
+    transform:
+      scale(0.7)
+      translateY(2px);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      scale(1.25)
+      translateY(-3px);
+  }
+}
+
+
+/* ==============================
+   소환 직전
+================================ */
+
+.lamp-area.summon-ready
+.magic-lamp {
+  animation:
+    lampSummonShake
+    0.18s
+    steps(2)
+    4;
+}
+
+
+@keyframes lampSummonShake {
+
+  0% {
+    transform:
+      translateX(-2px)
+      rotate(-2deg);
+  }
+
+  50% {
+    transform:
+      translateX(3px)
+      rotate(2deg);
+  }
+
+  100% {
+    transform:
+      translateX(0)
+      rotate(0);
+  }
+}
+
+
+/* ==============================
+   소환 팡
+================================ */
+
+.summon-burst {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 1px;
+  height: 1px;
+
+  z-index: 20;
+
+  pointer-events: none;
+}
+
+
+.summon-burst span {
+  position: absolute;
+
+  color: #fff6b5;
+
+  font-size:
+    clamp(
+      12px,
+      2svh,
+      18px
+    );
+
+  opacity: 0;
+
+  animation:
+    summonBurst
+    0.75s
+    ease-out
+    forwards;
+}
+
+
+.summon-burst span:nth-child(1) {
+  --x: -55px;
+  --y: -35px;
+}
+
+.summon-burst span:nth-child(2) {
+  --x: 50px;
+  --y: -42px;
+
+  animation-delay: 0.05s;
+}
+
+.summon-burst span:nth-child(3) {
+  --x: -68px;
+  --y: 8px;
+
+  animation-delay: 0.1s;
+}
+
+.summon-burst span:nth-child(4) {
+  --x: 65px;
+  --y: 10px;
+
+  animation-delay: 0.08s;
+}
+
+.summon-burst span:nth-child(5) {
+  --x: -25px;
+  --y: -70px;
+
+  animation-delay: 0.14s;
+}
+
+.summon-burst span:nth-child(6) {
+  --x: 28px;
+  --y: -75px;
+
+  animation-delay: 0.18s;
+}
+
+
+@keyframes summonBurst {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(0, 0)
+      scale(0.3);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+
+    transform:
+      translate(
+        var(--x),
+        var(--y)
+      )
+      scale(1.25);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(
+        var(--x),
+        var(--y)
+      )
+      scale(0.5);
+  }
+}
+
+
+/* =====================================
+   혀니 등장 후 전체 영역
+
+   ★ 말풍선 / 혀니 / 입력창을
+     하나의 세로 레이아웃으로 묶음
+===================================== */
+
+.summoned-content {
+  position: relative;
+
+  z-index: 20;
+
+  flex: 1;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /*
+    세 덩어리 전체를
+    살짝 위로 올림
+  */
+  justify-content: center;
+
+  transform:
+    translateY(
+      clamp(
+        -38px,
+        -4.5svh,
+        -24px
+      )
+    );
+}
+
+
+/* ==============================
+   PIXEL SPEECH BUBBLE
+================================ */
+
+.hyeoni-speech {
+  position: relative;
+
+  flex: none;
+
+  z-index: 30;
+
+  width:
+    min(64%, 235px);
+
+  box-sizing: border-box;
+
+  margin:
+    0 0
+    clamp(
+      7px,
+      1.2svh,
+      11px
+    );
+
+  padding:
+    12px
+    13px
+    14px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.78
+    );
+
+  color:
+    #504c70;
+
+  text-align: center;
+
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+
+  /*
+    계단식 픽셀 모서리
+  */
+  clip-path:
+    polygon(
+      8px 0,
+      calc(100% - 8px) 0,
+
+      calc(100% - 8px) 4px,
+      calc(100% - 4px) 4px,
+
+      calc(100% - 4px) 8px,
+      100% 8px,
+
+      100% calc(100% - 8px),
+
+      calc(100% - 4px)
+      calc(100% - 8px),
+
+      calc(100% - 4px)
+      calc(100% - 4px),
+
+      calc(100% - 8px)
+      calc(100% - 4px),
+
+      calc(100% - 8px)
+      100%,
+
+      8px 100%,
+
+      8px
+      calc(100% - 4px),
+
+      4px
+      calc(100% - 4px),
+
+      4px
+      calc(100% - 8px),
+
+      0
+      calc(100% - 8px),
+
+      0 8px,
+
+      4px 8px,
+
+      4px 4px,
+
+      8px 4px
+    );
+
+  animation:
+    hyeoniSpeechAppear
+    0.3s
+    steps(4)
+    both;
+}
+
+
+/* 픽셀 프레임 */
+
+.hyeoni-speech::before {
+  content: '';
+
+  position: absolute;
+
+  inset: 4px;
+
+  pointer-events: none;
+
+  border:
+    2px solid
+    rgba(
+      188,
+      180,
+      238,
+      0.55
+    );
+
+  box-sizing: border-box;
+}
+
+
+/* 말풍선 꼬리 */
+
+.hyeoni-speech::after {
+  content: '';
+
+  position: absolute;
+
+  left: 50%;
+  bottom: -7px;
+
+  transform:
+    translateX(-50%);
+
+  width: 8px;
+  height: 8px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.78
+    );
+
+  clip-path:
+    polygon(
+      0 0,
+      100% 0,
+      100% 50%,
+      75% 50%,
+      75% 75%,
+      50% 75%,
+      50% 100%,
+      25% 100%,
+      25% 50%,
+      0 50%
+    );
+}
+
+
+.hyeoni-speech p {
+  position: relative;
+
+  z-index: 2;
+
+  margin: 0;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size:
+    clamp(
+      12px,
+      1.65svh,
+      14px
+    );
+
+  line-height: 1.55;
+
+  color:
+    #504c70;
+}
+
+
+@keyframes hyeoniSpeechAppear {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+/* ==============================
+   HYEONI IMAGE AREA
+================================ */
+
+.hyeoni-image-area {
+  position: relative;
+
+  flex: none;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /*
+    이미지와 입력창 사이에
+    확실한 공간 확보
+  */
+  margin-bottom:
+    clamp(
+      12px,
+      2svh,
+      18px
+    );
+}
+
+
+.hyeoni-genie {
+  display: block;
+
+  width: 60%;
+  max-width: 255px;
+
+  height: auto;
+
+  user-select: none;
+  -webkit-user-drag: none;
+
+  transform-origin:
+    center bottom;
+
+  animation:
+    hyeoniAppear
+    0.85s
+    cubic-bezier(
+      0.22,
+      1,
+      0.36,
+      1
+    )
+    forwards;
+}
+
+
+@keyframes hyeoniAppear {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translateY(30px)
+      scaleX(0.78)
+      scaleY(0.2);
+
+    filter:
+      brightness(2);
+  }
+
+  45% {
+    opacity: 1;
+
+    transform:
+      translateY(-8px)
+      scaleX(1)
+      scaleY(1.08);
+
+    filter:
+      brightness(1.35);
+  }
+
+  70% {
+    transform:
+      translateY(3px)
+      scaleX(1.02)
+      scaleY(0.97);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+    filter:
+      brightness(1);
+  }
+}
+
+
+/* ==============================
+   WISH DIALOGUE
+================================ */
+
+.wish-dialogue {
+  position: relative;
+
+  flex: none;
+
+  z-index: 40;
+
+  /*
+    혀니와 독립된 정상 흐름이므로
+    절대 겹치지 않음
+  */
+
+  width:
+    min(82%, 300px);
+
+  box-sizing: border-box;
+
+  padding:
+    12px
+    13px
+    13px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.82
+    );
+
+  color:
+    #4f4b70;
+
+  border: none;
+  border-radius: 0;
+
+  box-shadow: none;
+
+  clip-path:
+    polygon(
+      8px 0,
+      calc(100% - 8px) 0,
+
+      calc(100% - 8px) 4px,
+      calc(100% - 4px) 4px,
+
+      calc(100% - 4px) 8px,
+      100% 8px,
+
+      100%
+      calc(100% - 8px),
+
+      calc(100% - 4px)
+      calc(100% - 8px),
+
+      calc(100% - 4px)
+      calc(100% - 4px),
+
+      calc(100% - 8px)
+      calc(100% - 4px),
+
+      calc(100% - 8px)
+      100%,
+
+      8px 100%,
+
+      8px
+      calc(100% - 4px),
+
+      4px
+      calc(100% - 4px),
+
+      4px
+      calc(100% - 8px),
+
+      0
+      calc(100% - 8px),
+
+      0 8px,
+
+      4px 8px,
+
+      4px 4px,
+
+      8px 4px
+    );
+}
+
+
+/* 안쪽 픽셀선 */
+
+.wish-dialogue::before {
+  content: '';
+
+  position: absolute;
+
+  inset: 4px;
+
+  pointer-events: none;
+
+  border:
+    2px solid
+    rgba(
+      188,
+      180,
+      238,
+      0.55
+    );
+
+  box-sizing: border-box;
+}
+
+
+/* ==============================
+   내 소원은...
+================================ */
+
+.wish-prefix {
+  position: relative;
+
+  z-index: 2;
+
+  margin:
+    0 0 8px;
+
+  /*
+    ★ 한글폰트 강제 적용
+  */
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size:
+    clamp(
+      14px,
+      1.8svh,
+      16px
+    );
+
+  line-height: 1.4;
+
+  color:
+    #514d73;
+
+  text-align: left;
+}
+
+
+/* ==============================
+   INPUT + BUTTON ROW
+================================ */
+
+.wish-input-row {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  display: flex;
+  align-items: stretch;
+
+  gap: 7px;
+}
+
+
+/* ==============================
+   INPUT
+================================ */
+
+.wish-input {
+  flex: 1;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  padding:
+    10px
+    9px;
+
+  outline: none;
+
+  border:
+    2px solid
+    rgba(
+      183,
+      174,
+      235,
+      0.52
+    );
+
+  border-radius: 0;
+
+  background:
+    rgba(
+      244,
+      241,
+      255,
+      0.72
+    );
+
+  color:
+    #464263;
+
+  /*
+    iOS 자동 줌 방지
+  */
+  font-size: 16px;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  box-shadow: none;
+}
+
+
+.wish-input::placeholder {
+  color:
+    rgba(
+      104,
+      96,
+      160,
+      0.42
+    );
+}
+
+
+.wish-input:focus {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.95
+    );
+
+  border-color:
+    rgba(
+      160,
+      148,
+      225,
+      0.85
+    );
+}
+
+
+/* ==============================
+   SEND BUTTON
+================================ */
+
+.wish-submit {
+  flex: none;
+
+  width: 42px;
+
+  box-sizing: border-box;
+
+  padding: 0;
+
+  border:
+    2px solid
+    rgba(
+      170,
+      159,
+      230,
+      0.7
+    );
+
+  border-radius: 0;
+
+  background:
+    rgba(
+      214,
+      207,
+      255,
+      0.82
+    );
+
+  color:
+    #675f9c;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 9px;
+
+  cursor: pointer;
+
+  /*
+    픽셀 버튼 느낌
+  */
+  box-shadow:
+    3px 3px 0
+    rgba(
+      100,
+      91,
+      160,
+      0.28
+    );
+
+  touch-action: manipulation;
+}
+
+
+.wish-submit:active:not(:disabled) {
+  transform:
+    translate(
+      2px,
+      2px
+    );
+
+  box-shadow:
+    1px 1px 0
+    rgba(
+      100,
+      91,
+      160,
+      0.28
+    );
+}
+
+
+.wish-submit:disabled {
+  opacity: 0.35;
+
+  cursor: default;
+}
+
+
+/* ==============================
+   BACK
+================================ */
+
+.lucky-back {
+  position: absolute;
+
+  left: 50%;
+  bottom: 8px;
+
+  transform:
+    translateX(-50%);
+
+  z-index: 60;
+
+  padding:
+    8px
+    14px;
+
+  border: 0;
+
+  background: transparent;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size:
+    clamp(
+      5px,
+      0.9svh,
+      7px
+    );
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.55
+    );
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+  touch-action: manipulation;
+}
+
+
+/* ==============================
+   COMPLETE BUTTONS
+================================ */
+
+.wish-complete-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top:
+    clamp(12px, 2svh, 18px);
+}
+
+
+.wish-complete-button {
+  min-width: 82px;
+
+  padding:
+    10px
+    14px;
+
+  border:
+    2px solid
+    rgba(184, 177, 235, 0.75);
+
+  background:
+    rgba(255, 255, 255, 0.78);
+
+  color:
+    #57517f;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size:
+    clamp(6px, 1svh, 8px);
+
+  border-radius: 0;
+
+  box-shadow:
+    3px 3px 0
+    rgba(104, 94, 165, 0.25);
+
+  cursor: pointer;
+
+  touch-action: manipulation;
+}
+
+
+.wish-complete-button:active {
+  transform:
+    translate(2px, 2px);
+
+  box-shadow:
+    1px 1px 0
+    rgba(104, 94, 165, 0.25);
+}
+
+/* ==============================
+   작은 화면
+================================ */
+
+@media (max-width: 600px) {
+
+  .lucky-hyeoni {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+
+  .summoned-content {
+    /*
+      모바일에서도 전체를
+      조금 더 위로
+    */
+    transform:
+      translateY(-30px);
+  }
+
+
+  .hyeoni-speech {
+    width: 66%;
+  }
+
+
+  .hyeoni-genie {
+    width: 58%;
+  }
+
+
+  .wish-dialogue {
+    width: 84%;
+  }
+
+}

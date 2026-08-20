@@ -1,13 +1,74 @@
 /* ==============================
-   전체 페이지
+   DREAM SHELL
+   Intro / DreamMap 공통 9:16 영역
 ================================ */
 
-.dream-page {
-  width: 100%;
-  min-height: 100vh;
+.dream-shell {
+  position: relative;
 
-  background: white;
-  color: white;
+  width:
+    min(
+      100vw,
+      calc(100svh * 9 / 16)
+    );
+
+  height:
+    min(
+      100svh,
+      calc(100vw * 16 / 9)
+    );
+
+  aspect-ratio: 9 / 16;
+
+  margin: 0 auto;
 
   overflow: hidden;
+}
+
+
+/* 실제 페이지 콘텐츠 */
+
+.dream-content {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 10;
+}
+
+/* ==============================
+   INTRO / DREAM MAP 공통 프레임
+================================ */
+
+.dream-shell {
+  position: relative;
+
+  width: min(
+    100vw,
+    calc(100svh * 9 / 16)
+  );
+
+  height: min(
+    100svh,
+    calc(100vw * 16 / 9)
+  );
+
+  aspect-ratio: 9 / 16;
+
+  margin: 0 auto;
+
+  overflow: hidden;
+}
+
+
+/* Intro / DreamMap이 올라가는 영역 */
+
+.dream-content {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 10;
 }

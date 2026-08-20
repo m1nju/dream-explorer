@@ -1,0 +1,861 @@
+/* ==============================
+   GUESTBOOK SCREEN
+================================ */
+
+.guestbook {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding:
+    clamp(35px, 6svh, 60px)
+    14px
+    clamp(45px, 7svh, 65px);
+
+  overflow: hidden;
+
+  background: transparent;
+}
+
+
+/* ==============================
+   OLD PIXEL WINDOW
+================================ */
+
+.guestbook-window {
+  position: relative;
+
+  width:
+    min(90%, 350px);
+
+  height:
+    min(78svh, 620px);
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  /* 메인 프레임 */
+  background:
+    #8cc4ff;
+
+  padding: 4px;
+
+  border-radius: 9px;
+
+  box-shadow:
+    0 0 0 2px
+      rgba(226, 242, 255, 0.92),
+
+    0 0 16px
+      rgba(105, 171, 252, 0.18);
+
+  overflow: hidden;
+}
+
+
+/* ==============================
+   WINDOW BAR
+================================ */
+
+.guestbook-window-bar {
+  position: relative;
+
+  flex: none;
+
+  height: 42px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding:
+    0 8px
+    0 10px;
+
+  /*
+    #69abfc보다 약간 진한 톤
+  */
+  background:
+    #69abfc;
+
+  color: white;
+}
+
+
+/* ==============================
+   WINDOW TITLE
+================================ */
+
+.window-title {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 0;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size:
+    clamp(6px, 1svh, 8px);
+
+  white-space: nowrap;
+}
+
+
+.window-heart {
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 18px;
+
+  line-height: 1;
+
+  color:
+    #ffffff;
+
+  text-shadow:
+    2px 0 0
+    rgba(213, 237, 255, 0.5);
+}
+
+
+/* ==============================
+   WINDOW CONTROLS
+================================ */
+
+.window-controls {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+}
+
+
+.window-control {
+  width: 25px;
+  height: 25px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border:
+    2px solid
+    rgba(255, 255, 255, 0.92);
+
+  border-radius: 0;
+
+  background:
+    transparent;
+
+  color: white;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 17px;
+
+  line-height: 1;
+
+  cursor: default;
+}
+
+
+/* 두 번째 아이콘
+   문자 □ 대신 CSS 네모 사용 시 */
+
+.window-maximize {
+  position: relative;
+}
+
+
+.window-maximize i {
+  display: block;
+
+  width: 10px;
+  height: 10px;
+
+  box-sizing: border-box;
+
+  border:
+    2px solid
+    #ffffff;
+
+  margin: 0;
+}
+
+
+.window-close {
+  cursor: pointer;
+}
+
+
+.window-close:active {
+  background:
+    rgba(255, 255, 255, 0.18);
+}
+
+
+/* ==============================
+   WINDOW CONTENT
+================================ */
+
+.guestbook-window-content {
+  position: relative;
+
+  flex: 1;
+
+  min-height: 0;
+
+  margin: 0;
+
+  padding:
+    clamp(20px, 3svh, 27px)
+    17px
+    15px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  background:
+    rgba(247, 252, 255, 0.95);
+
+  color:
+    #547793;
+
+  border-radius:
+    5px 5px 7px 7px;
+
+  overflow: hidden;
+}
+
+
+/* ==============================
+   HEADER
+================================ */
+
+.guestbook-header {
+  flex: none;
+
+  text-align: center;
+
+  margin-bottom: 17px;
+}
+
+
+.guestbook-small {
+  margin:
+    0 0 7px;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size:
+    clamp(5px, 0.75svh, 6px);
+
+  letter-spacing:
+    0.5px;
+
+  color:
+    rgba(105, 171, 252, 0.55);
+}
+
+
+/* 핵심 타이틀 */
+
+.guestbook-title {
+  margin: 0;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size:
+    clamp(24px, 3.8svh, 34px);
+
+  line-height: 1.2;
+
+  color:
+    #69abfc;
+
+  text-shadow:
+    2px 2px 0
+    rgba(196, 226, 255, 0.85);
+}
+
+
+.guestbook-description {
+  margin:
+    8px 0 0;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size:
+    clamp(12px, 1.6svh, 14px);
+
+  color:
+    #7396b4;
+}
+
+
+/* ==============================
+   WRITE AREA
+================================ */
+
+.guestbook-write {
+  position: relative;
+
+  flex: none;
+
+  box-sizing: border-box;
+
+  padding:
+    11px;
+
+  border:
+    2px solid
+    #acd3f5;
+
+  background:
+    rgba(226, 243, 255, 0.58);
+
+  box-shadow:
+    inset 2px 2px 0
+    rgba(105, 171, 252, 0.12);
+}
+
+
+/* ==============================
+   NAME
+================================ */
+
+.guestbook-name-row {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 8px;
+}
+
+
+.guestbook-label {
+  flex: none;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 6px;
+
+  color:
+    #5e94c4;
+}
+
+
+.guestbook-name-input {
+  flex: 1;
+
+  min-width: 0;
+
+  height: 31px;
+
+  box-sizing: border-box;
+
+  padding:
+    5px 7px;
+
+  outline: none;
+
+  border:
+    2px solid
+    #b6d9f5;
+
+  border-radius: 0;
+
+  background:
+    rgba(255, 255, 255, 0.86);
+
+  color:
+    #4e718e;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 16px;
+
+  box-shadow:
+    inset 2px 2px 0
+    rgba(105, 171, 252, 0.08);
+}
+
+
+/* ==============================
+   MESSAGE INPUT
+================================ */
+
+.guestbook-message-input {
+  display: block;
+
+  width: 100%;
+  height: 65px;
+
+  box-sizing: border-box;
+
+  padding: 8px;
+
+  resize: none;
+  outline: none;
+
+  border:
+    2px solid
+    #b6d9f5;
+
+  border-radius: 0;
+
+  background:
+    rgba(255, 255, 255, 0.86);
+
+  color:
+    #4e718e;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 16px;
+
+  line-height: 1.35;
+
+  box-shadow:
+    inset 2px 2px 0
+    rgba(105, 171, 252, 0.08);
+}
+
+
+/* 포커스 */
+
+.guestbook-name-input:focus,
+.guestbook-message-input:focus {
+  border-color:
+    #69abfc;
+
+  background:
+    rgba(255, 255, 255, 0.98);
+}
+
+
+/* placeholder */
+
+.guestbook-name-input::placeholder,
+.guestbook-message-input::placeholder {
+  color:
+    rgba(94, 133, 165, 0.42);
+}
+
+
+/* ==============================
+   WRITE BOTTOM
+================================ */
+
+.guestbook-write-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 7px;
+}
+
+
+.guestbook-count {
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 11px;
+
+  color:
+    rgba(82, 125, 160, 0.55);
+}
+
+
+/* ==============================
+   WRITE BUTTON
+================================ */
+
+.guestbook-submit {
+  padding:
+    7px 10px;
+
+  border:
+    2px solid
+    #69abfc;
+
+  border-radius: 0;
+
+  background:
+    #cce8ff;
+
+  color:
+    #4d8bc4;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 6px;
+
+  box-shadow:
+    2px 2px 0
+    #8fc4f2;
+
+  cursor: pointer;
+}
+
+
+.guestbook-submit:hover:not(:disabled) {
+  background:
+    #d9efff;
+}
+
+
+.guestbook-submit:active:not(:disabled) {
+  transform:
+    translate(2px, 2px);
+
+  box-shadow: none;
+}
+
+
+.guestbook-submit:disabled {
+  opacity: 0.38;
+
+  cursor: default;
+}
+
+
+/* ==============================
+   DIVIDER
+================================ */
+
+.guestbook-divider {
+  position: relative;
+
+  flex: none;
+
+  margin:
+    17px 0
+    10px;
+
+  height: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.guestbook-divider::before {
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  height: 1px;
+
+  background:
+    rgba(105, 171, 252, 0.28);
+}
+
+
+.guestbook-divider span {
+  position: relative;
+
+  z-index: 2;
+
+  padding:
+    0 8px;
+
+  background:
+    #f7fcff;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 5px;
+
+  color:
+    #75aee2;
+}
+
+
+/* ==============================
+   MESSAGE LIST
+================================ */
+
+.guestbook-list {
+  flex: 1;
+
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding:
+    1px 3px
+    10px;
+
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    #8fc5ef
+    rgba(228, 244, 255, 0.8);
+}
+
+
+/* ==============================
+   PIXEL SCROLLBAR
+================================ */
+
+.guestbook-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+
+.guestbook-list::-webkit-scrollbar-track {
+  background:
+    rgba(228, 244, 255, 0.86);
+
+  border-left:
+    1px solid
+    #c0ddf4;
+}
+
+
+.guestbook-list::-webkit-scrollbar-thumb {
+  background:
+    #8fc5ef;
+
+  border:
+    1px solid
+    #69abfc;
+}
+
+
+/* ==============================
+   MESSAGE ENTRY
+================================ */
+
+.guestbook-entry {
+  position: relative;
+
+  box-sizing: border-box;
+
+  width: 100%;
+
+  margin:
+    0 0 8px;
+
+  padding:
+    9px 10px;
+
+  border:
+    1px solid
+    rgba(151, 199, 236, 0.78);
+
+  background:
+    rgba(228, 244, 255, 0.64);
+}
+
+
+.guestbook-entry-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 4px;
+}
+
+
+.guestbook-entry-name {
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 13px;
+
+  color:
+    #5d91bd;
+}
+
+
+.guestbook-entry-name::before {
+  content: 'FROM. ';
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 5px;
+
+  color:
+    #8bb5d8;
+}
+
+
+.guestbook-entry-star {
+  font-size: 9px;
+
+  color:
+    #69abfc;
+}
+
+
+.guestbook-entry-message {
+  margin: 0;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size:
+    clamp(13px, 1.65svh, 15px);
+
+  line-height: 1.4;
+
+  color:
+    #506f89;
+
+  word-break:
+    break-word;
+}
+
+
+/* ==============================
+   STATUS
+================================ */
+
+.guestbook-status {
+  margin:
+    25px 0;
+
+  text-align: center;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 13px;
+
+  color:
+    #7da4c2;
+}
+
+
+/* ==============================
+   BACK
+================================ */
+
+.guestbook-back {
+  position: absolute;
+
+  left: 50%;
+  bottom: 12px;
+
+  transform:
+    translateX(-50%);
+
+  z-index: 50;
+
+  padding:
+    8px 14px;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size:
+    clamp(5px, 0.9svh, 7px);
+
+  color:
+    rgba(255, 255, 255, 0.62);
+
+  cursor: pointer;
+}
+
+
+/* ==============================
+   MOBILE
+================================ */
+
+@media (max-width: 600px) {
+
+  .guestbook-window {
+    width: 91%;
+
+    height:
+      min(77svh, 610px);
+  }
+
+
+  .guestbook-window-bar {
+    height: 39px;
+  }
+
+
+  .window-control {
+    width: 23px;
+    height: 23px;
+
+    font-size: 15px;
+  }
+
+
+  .window-maximize i {
+    width: 9px;
+    height: 9px;
+  }
+
+
+  .guestbook-window-content {
+    padding:
+      18px 13px
+      13px;
+  }
+
+}

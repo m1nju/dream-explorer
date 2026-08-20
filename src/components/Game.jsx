@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import './Game.css'
 
+import { supabase } from '../lib/supabase'
+
 import run1 from '../assets/run-1.png'
 import run2 from '../assets/run-2.png'
 import jumpImg from '../assets/jump.png'
@@ -8,6 +10,15 @@ import slideImg from '../assets/slide.png'
 
 import gameBg from '../assets/game-bg.png'
 import gameGr from '../assets/game-gr.png'
+import rockImg from '../assets/rock.png'
+import hangingStarImg from '../assets/hangingstar.png'
+import cloudImg from '../assets/cloud.png'
+import starImg from '../assets/star.png'
+
+import boingSound from '../assets/boing.mp3'
+import slideSound from '../assets/slide.mp3'
+import bgmSound from '../assets/bgm.mp3'
+import overSound from '../assets/over.mp3'
 
 
 function Game({ onBack }) {
@@ -22,6 +33,69 @@ function Game({ onBack }) {
   const [runFrame, setRunFrame] = useState(0)
 
   const [obstacles, setObstacles] = useState([])
+
+  const [particles, setParticles] = useState([])
+
+  const boingAudioRef = useRef(null)
+  const slideAudioRef = useRef(null)
+  const bgmAudioRef = useRef(null)
+  const overAudioRef = useRef(null)
+
+  
+
+  // ==============================
+// 랭킹 UI
+// ==============================
+
+const [nickname, setNickname] = useState(() => {
+  return localStorage.getItem('dreamNickname') || ''
+})
+
+const [scoreSaved, setScoreSaved] = useState(false)
+const [nicknameError, setNicknameError] = useState('')
+const [rankingMode, setRankingMode] = useState(null)
+// null = 게임오버 기본창
+// 'top' = 1~5등
+// 'mine' = 내 순위 주변
+
+const [playerId] = useState(() => {
+  let id =
+    localStorage.getItem('dreamPlayerId')
+
+  if (!id) {
+    if (
+      typeof crypto !== 'undefined' &&
+      typeof crypto.randomUUID === 'function'
+    ) {
+      id = crypto.randomUUID()
+    } else {
+      id =
+        `${Date.now()}-${Math.random()
+          .toString(36)
+          .slice(2)}-${Math.random()
+          .toString(36)
+          .slice(2)}`
+    }
+
+    localStorage.setItem(
+      'dreamPlayerId',
+      id
+    )
+  }
+
+  return id
+})
+
+// ==============================
+// 랭킹 데이터
+// ==============================
+
+const [ranking, setRanking] = useState([])
+const [myRanking, setMyRanking] = useState([])
+const [myRankNumber, setMyRankNumber] = useState(null)
+
+const [rankingLoading, setRankingLoading] = useState(false)
+const [scoreSaving, setScoreSaving] = useState(false)
 
 
   // ==============================
@@ -58,6 +132,18 @@ function Game({ onBack }) {
   const obstaclesRef = useRef([])
   const nextSpawnRef = useRef(1.8)
 
+  /*
+    직전에 나온 장애물 기억
+
+    cloud = rock.png
+    moon  = cloud.png
+    ufo   = hangingstar.png
+
+    이름은 기존 그대로 유지
+  */
+  const lastObstacleTypeRef = useRef(null)
+  const sameObstacleCountRef = useRef(0)
+
 
   // ==============================
   // 게임 루프
@@ -77,6 +163,8 @@ function Game({ onBack }) {
   const groundRef = useRef(null)
   const groundXRef = useRef(0)
 
+  const particleIdRef = useRef(0)
+
 
   // ==============================
   // 장애물 종류
@@ -84,22 +172,22 @@ function Game({ onBack }) {
 
   const obstacleTypes = {
     cloud: {
-      icon: '☁️',
+      image: rockImg,
       className: 'obstacle-cloud',
     },
 
     star: {
-      icon: '⭐',
+      image: starImg,
       className: 'obstacle-star',
     },
 
     moon: {
-      icon: '🌙',
+      image: cloudImg,
       className: 'obstacle-moon',
     },
 
     ufo: {
-      icon: '🛸',
+      image: hangingStarImg,
       className: 'obstacle-ufo',
     },
   }
@@ -110,29 +198,166 @@ function Game({ onBack }) {
   // ==============================
 
   const spawnObstacle = () => {
-    const types = [
+  const time = gameTimeRef.current
+
+  let types
+
+
+  // ==============================
+  // 초반 0 ~ 15초
+  // 아직 비교적 쉬움
+  // STAR 비율은 기존보다 높임
+  // ==============================
+
+  if (time < 15) {
+    types = [
       'cloud',
       'cloud',
+      'cloud',
+
       'star',
+      'star',
+      'star',
+
       'moon',
-      'ufo',
-      'ufo',
-    ]
-
-    const type =
-      types[Math.floor(Math.random() * types.length)]
-
-    const newObstacle = {
-      id: `${Date.now()}-${Math.random()}`,
-      type,
-      x: 110,
-    }
-
-    obstaclesRef.current = [
-      ...obstaclesRef.current,
-      newObstacle,
     ]
   }
+
+
+  // ==============================
+  // 중반 15 ~ 35초
+  //
+  // STAR 비율 증가
+  // UFO도 본격 등장
+  // ==============================
+
+  else if (time < 35) {
+    types = [
+      'cloud',
+      'cloud',
+
+      'moon',
+      'moon',
+
+      'star',
+      'star',
+      'star',
+      'star',
+
+      'ufo',
+      'ufo',
+    ]
+  }
+
+
+  // ==============================
+  // 후반 35초 ~
+  //
+  // STAR / UFO 비율 높음
+  // 연속 패턴 허용
+  // ==============================
+
+  else {
+    types = [
+      'cloud',
+      'cloud',
+
+      'moon',
+      'moon',
+
+      'star',
+      'star',
+      'star',
+      'star',
+      'star',
+
+      'ufo',
+      'ufo',
+      'ufo',
+    ]
+  }
+
+
+  const lastType =
+    lastObstacleTypeRef.current
+
+
+  // ==============================
+  // 큰 점프 장애물만 연속 방지
+  // ==============================
+
+
+  /*
+    중요:
+
+    ufo → ufo
+    star → star
+    star → ufo
+    ufo → star
+
+    전부 허용.
+
+    그래서 기존에 있던
+
+    if (lastType === 'ufo') {
+      ...
+    }
+
+    코드는 삭제함.
+  */
+
+
+  if (types.length === 0) {
+    types = ['cloud']
+  }
+
+
+/*
+  같은 장애물이 이미 2번 연속 나왔다면
+  세 번째부터는 후보에서 제거
+*/
+if (sameObstacleCountRef.current >= 2) {
+  types = types.filter(
+    (type) => type !== lastType
+  )
+}
+
+
+  
+
+  const type =
+    types[
+      Math.floor(
+        Math.random() * types.length
+      )
+    ]
+
+
+  const newObstacle = {
+    id: `${Date.now()}-${Math.random()}`,
+    type,
+    x: 110,
+  }
+
+
+  obstaclesRef.current = [
+    ...obstaclesRef.current,
+    newObstacle,
+  ]
+
+
+  // 같은 장애물이 연속으로 나온 경우
+if (type === lastObstacleTypeRef.current) {
+  sameObstacleCountRef.current += 1
+}
+
+// 다른 장애물이 나온 경우
+else {
+  sameObstacleCountRef.current = 1
+}
+
+lastObstacleTypeRef.current = type
+}
 
 
   // ==============================
@@ -151,6 +376,12 @@ function Game({ onBack }) {
 
     obstaclesRef.current = []
     nextSpawnRef.current = 1.6
+
+    /*
+      이전 판의 장애물 기록 초기화
+    */
+    lastObstacleTypeRef.current = null
+    sameObstacleCountRef.current = 0
 
     backgroundXRef.current = 0
     groundXRef.current = 0
@@ -175,28 +406,270 @@ function Game({ onBack }) {
     setRunFrame(0)
     setObstacles([])
 
+    setScoreSaved(false)
+
+    setRankingMode(null)
+
     setIsGameOver(false)
     setIsRunning(true)
+
+    // BGM 시작
+    if (bgmAudioRef.current) {
+      bgmAudioRef.current.currentTime = 0
+      bgmAudioRef.current.volume = 0.4
+
+      bgmAudioRef.current
+        .play()
+        .catch(() => {})
+    }
   }
 
+
+// ==============================
+// TOP 5 랭킹 불러오기
+// ==============================
+
+const loadRanking = async () => {
+  setRankingLoading(true)
+
+  const { data, error } = await supabase
+    .from('scores')
+    .select('id, nickname, score, player_id, created_at')
+    .order('score', {
+      ascending: false,
+    })
+    .order('created_at', {
+      ascending: true,
+    })
+    .limit(5)
+
+  if (error) {
+    console.error(
+      '랭킹 불러오기 실패:',
+      error
+    )
+
+    setRanking([])
+    setRankingLoading(false)
+    return
+  }
+
+  setRanking(data || [])
+  setRankingLoading(false)
+}
+
+
+// ==============================
+// 내 순위 주변 랭킹 불러오기
+// 위 2명 + 나 + 아래 2명
+// ==============================
+
+const loadMyRanking = async () => {
+  setRankingLoading(true)
+
+  const { data, error } = await supabase
+    .from('scores')
+    .select('id, nickname, score, player_id, created_at')
+    .order('score', {
+      ascending: false,
+    })
+    .order('created_at', {
+      ascending: true,
+    })
+
+  if (error) {
+    console.error(
+      '내 랭킹 불러오기 실패:',
+      error
+    )
+
+    setMyRanking([])
+    setMyRankNumber(null)
+    setRankingLoading(false)
+    return
+  }
+
+  const rows = data || []
+
+  const myIndex = rows.findIndex(
+    (row) =>
+      row.player_id === playerId
+  )
+
+  if (myIndex === -1) {
+    setMyRanking([])
+    setMyRankNumber(null)
+    setRankingLoading(false)
+    return
+  }
+
+  const startIndex =
+    Math.max(0, myIndex - 2)
+
+  const endIndex =
+    Math.min(
+      rows.length,
+      myIndex + 3
+    )
+
+  const nearbyRows =
+    rows
+      .slice(
+        startIndex,
+        endIndex
+      )
+      .map((row, index) => ({
+        ...row,
+        rank:
+          startIndex +
+          index +
+          1,
+      }))
+
+  setMyRanking(nearbyRows)
+  setMyRankNumber(myIndex + 1)
+
+  setRankingLoading(false)
+}
+
+
+// ==============================
+// 실제 점수 저장
+// ==============================
+
+
+const saveScore = async () => {
+  const trimmedNickname = nickname.trim()
+
+  if (!trimmedNickname) return
+  if (scoreSaved || scoreSaving) return
+
+  setScoreSaving(true)
+  setNicknameError('')
+
+  const normalizedNickname =
+    trimmedNickname.toUpperCase()
+
+
+  // 1. 같은 닉네임이 이미 있는지 확인
+  const {
+    data: existingRows,
+    error: checkError,
+  } = await supabase
+    .from('scores')
+    .select('id, nickname, score, player_id')
+    .eq('nickname', normalizedNickname)
+    .limit(1)
+
+  if (checkError) {
+    console.error(
+      '닉네임 확인 실패:',
+      checkError
+    )
+
+    setScoreSaving(false)
+    return
+  }
+
+
+  const existing =
+    existingRows?.[0]
+
+
+  // 2. 같은 닉네임이 있는데
+  // 다른 사람 소유면 중복 닉네임 에러
+  if (
+    existing &&
+    existing.player_id !== playerId
+  ) {
+    setNicknameError(
+      '이미 사용 중인 닉네임이에요'
+    )
+
+    setScoreSaving(false)
+    return
+  }
+
+
+  // 3. 내 닉네임 기록이 이미 있는 경우
+  if (existing) {
+
+    // 새 점수가 더 높을 때만 UPDATE
+    if (score > existing.score) {
+      const { error: updateError } =
+        await supabase
+          .from('scores')
+          .update({
+            score,
+          })
+          .eq('id', existing.id)
+
+      if (updateError) {
+        console.error(
+          '점수 업데이트 실패:',
+          updateError
+        )
+
+        setScoreSaving(false)
+        return
+      }
+    }
+
+    // 새 점수가 더 낮거나 같으면
+    // DB는 아무것도 안 바꿈
+  }
+
+
+  // 4. 처음 쓰는 닉네임이면 새 행 생성
+  else {
+    const { error: insertError } =
+      await supabase
+        .from('scores')
+        .insert({
+          nickname: normalizedNickname,
+          score,
+          player_id: playerId,
+        })
+
+    if (insertError) {
+      console.error(
+        '점수 저장 실패:',
+        insertError
+      )
+
+      setScoreSaving(false)
+      return
+    }
+  }
+
+
+  setScoreSaved(true)
+  setScoreSaving(false)
+
+  await loadMyRanking()
+
+  setRankingMode('mine')
+}
 
   // ==============================
   // 점프
   // ==============================
 
   const jump = () => {
-    if (!isRunning || isGameOver) return
+  if (!isRunning || isGameOver) return
+  if (isSlidingRef.current) return
+  if (yRef.current > 2) return
 
-    // 슬라이드 중 점프 불가
-    if (isSlidingRef.current) return
+  velocityRef.current = 690
+  setIsJumping(true)
 
-    // 1단 점프
-    if (yRef.current > 2) return
-
-    velocityRef.current = 690
-
-    setIsJumping(true)
+  // 점프 효과음
+  if (boingAudioRef.current) {
+    boingAudioRef.current.currentTime = 0
+    boingAudioRef.current.volume = 0.35
+    boingAudioRef.current.play().catch(() => {})
   }
+}
 
 
   // ==============================
@@ -204,24 +677,27 @@ function Game({ onBack }) {
   // ==============================
 
   const startSlide = () => {
-    if (!isRunning || isGameOver) return
+  if (!isRunning || isGameOver) return
 
-    slidePressedRef.current = true
+  slidePressedRef.current = true
 
-    isSlidingRef.current = true
-    setIsSliding(true)
+  isSlidingRef.current = true
+  setIsSliding(true)
 
-    /*
-      점프 중 SLIDE를 누르면
-      뚝 떨어지는 게 아니라
-      빠르게 슉 내려옴
-    */
-    if (yRef.current > 2) {
-      velocityRef.current = -950
-
-      setIsJumping(false)
-    }
+  // 슬라이드 효과음
+  if (slideAudioRef.current) {
+    slideAudioRef.current.currentTime = 0
+    slideAudioRef.current
+      .play()
+      .catch(() => {})
   }
+
+  if (yRef.current > 2) {
+    velocityRef.current = -950
+
+    setIsJumping(false)
+  }
+}
 
 
   // ==============================
@@ -237,6 +713,7 @@ function Game({ onBack }) {
       공중이면 착지할 때
       게임 루프에서 자동 해제
     */
+
     if (yRef.current <= 2) {
       isSlidingRef.current = false
       setIsSliding(false)
@@ -274,6 +751,83 @@ function Game({ onBack }) {
     isJumping,
   ])
 
+  // ==============================
+// 달리기 파티클
+// ==============================
+
+useEffect(() => {
+  if (
+    !isRunning ||
+    isGameOver ||
+    isJumping ||
+    isSliding
+  ) {
+    return
+  }
+
+  const interval = setInterval(() => {
+    /*
+      혹시 실제 물리상 공중이면 생성 안 함
+    */
+    if (yRef.current > 2) return
+
+    const id =
+      particleIdRef.current++
+
+    /*
+      두 종류 중 랜덤
+      dust = 작은 픽셀
+      sparkle = 작은 별
+    */
+    const type =
+      Math.random() > 0.72
+        ? 'sparkle'
+        : 'dust'
+
+    const newParticle = {
+      id,
+      type,
+
+      /*
+        매번 똑같은 곳에서 나오면
+        너무 기계적으로 보여서 살짝 랜덤
+      */
+      offsetX:
+        Math.random() * 8 - 4,
+
+      offsetY:
+        Math.random() * 5,
+    }
+
+    setParticles((prev) => [
+      ...prev,
+      newParticle,
+    ])
+
+    /*
+      애니메이션 끝난 뒤 삭제
+    */
+    setTimeout(() => {
+      setParticles((prev) =>
+        prev.filter(
+          (particle) =>
+            particle.id !== id
+        )
+      )
+    }, 500)
+
+  }, 110)
+
+  return () => {
+    clearInterval(interval)
+  }
+}, [
+  isRunning,
+  isGameOver,
+  isJumping,
+  isSliding,
+])
+
 
   // ==============================
   // GAME LOOP
@@ -284,7 +838,9 @@ function Game({ onBack }) {
 
     const gravity = 1800
 
-    const baseSpeed = 44
+    // 초반 속도는 기존보다 빠르게
+    // 대신 시간이 지날수록 빨라지는 속도는 완만하게
+    const baseSpeed = 58
     const maxSpeed = 145
 
 
@@ -314,7 +870,7 @@ function Game({ onBack }) {
 
       const currentSpeed = Math.min(
         baseSpeed +
-          gameTimeRef.current * 1.7,
+          gameTimeRef.current * 1.1,
         maxSpeed
       )
 
@@ -401,6 +957,7 @@ function Game({ onBack }) {
           착지하기 전에 손을 뗐다면
           착지와 동시에 달리기로
         */
+
         if (
           isSlidingRef.current &&
           !slidePressedRef.current
@@ -430,22 +987,61 @@ function Game({ onBack }) {
       if (nextSpawnRef.current <= 0) {
         spawnObstacle()
 
-        const difficulty = Math.min(
-          gameTimeRef.current / 45,
-          1
-        )
 
-        const minGap =
-          1.35 -
-          difficulty * 0.7
+        /*
+          이제 시간에 따라 간격을
+          무한정 줄이지 않음.
 
-        const randomGap =
-          0.55 -
-          difficulty * 0.2
+          후반에도 플레이어가
+          착지/자세 복귀할 시간을
+          확보하도록 최소 간격 유지.
+        */
 
-        nextSpawnRef.current =
-          minGap +
-          Math.random() * randomGap
+          const time =
+  gameTimeRef.current
+
+const lastType =
+  lastObstacleTypeRef.current
+
+let minGap
+let randomGap
+
+
+// 초반
+if (time < 15) {
+  minGap = 1.45
+  randomGap = 0.50
+}
+
+
+// 중반
+else if (time < 35) {
+  minGap = 1.15
+  randomGap = 0.40
+}
+
+
+// 후반
+else {
+  minGap = 0.90
+  randomGap = 0.35
+}
+
+
+// 큰 점프 장애물 뒤에는
+// 아주 최소한의 착지 여유만
+if (lastType === 'moon') {
+  minGap += 0.20
+}
+
+
+// rock / star / ufo는
+// 추가 여유 없음
+
+
+nextSpawnRef.current =
+  minGap +
+  Math.random() * randomGap
       }
 
 
@@ -496,8 +1092,57 @@ function Game({ onBack }) {
           const obstacleRect =
             obstacleElement.getBoundingClientRect()
 
-          const obstaclePaddingX = 7
-          const obstaclePaddingY = 5
+
+          const isRock =
+            obstacle.type === 'cloud'
+
+          const isMoon =
+            obstacle.type === 'moon'
+
+          const isUfo =
+            obstacle.type === 'ufo'
+
+
+          /*
+            X는 좌우 패딩,
+            Top / Bottom을 따로 둬서
+            행잉스타 히트박스만 위로 올릴 수 있게 함
+          */
+
+          let obstaclePaddingX = 7
+          let obstaclePaddingTop = 5
+          let obstaclePaddingBottom = 5
+
+
+          // rock
+
+          if (isRock) {
+            obstaclePaddingX = 2
+            obstaclePaddingTop = 2
+            obstaclePaddingBottom = 2
+          }
+
+
+          // cloud.png (코드상 moon)
+          // 이미지보다 충돌박스를 작게
+
+          if (isMoon) {
+            obstaclePaddingX = 25
+            obstaclePaddingTop = 25
+            obstaclePaddingBottom = 25
+          }
+
+
+          // hangingstar.png (코드상 ufo)
+          // 이미지는 현재 위치 그대로 두고
+          // 충돌박스의 아랫부분만 많이 잘라서 위로 올림
+
+          if (isUfo) {
+            obstaclePaddingX = 10
+            obstaclePaddingTop = 5
+            obstaclePaddingBottom = 25
+          }
+
 
           const hit =
             playerRect.left +
@@ -513,16 +1158,30 @@ function Game({ onBack }) {
             playerRect.top +
                 playerPaddingY <
               obstacleRect.bottom -
-                obstaclePaddingY &&
+                obstaclePaddingBottom &&
 
             playerRect.bottom -
                 playerPaddingY >
               obstacleRect.top +
-                obstaclePaddingY
+                obstaclePaddingTop
+
 
           if (hit) {
             setIsGameOver(true)
             setIsRunning(false)
+
+              if (bgmAudioRef.current) {
+                bgmAudioRef.current.pause()
+              }
+
+          if (overAudioRef.current) {
+              overAudioRef.current.currentTime = 0
+              overAudioRef.current.volume = 0.6
+
+              overAudioRef.current
+                .play()
+                .catch(() => {})
+            }
 
             slidePressedRef.current = false
             isSlidingRef.current = false
@@ -536,6 +1195,7 @@ function Game({ onBack }) {
 
             return
           }
+          
         }
       }
 
@@ -648,7 +1308,35 @@ function Game({ onBack }) {
   // ==============================
 
   return (
+
     <section className="game-page">
+
+      {/* 오디오  */}
+
+        <audio
+      ref={boingAudioRef}
+      src={boingSound}
+      preload="auto"
+    />
+
+    <audio
+      ref={slideAudioRef}
+      src={slideSound}
+      preload="auto"
+    />
+
+    <audio
+      ref={bgmAudioRef}
+      src={bgmSound}
+      preload="auto"
+      loop
+    />
+
+    <audio
+      ref={overAudioRef}
+      src={overSound}
+      preload="auto"
+    />
 
       {/* =========================
           상단 UI
@@ -724,6 +1412,31 @@ function Game({ onBack }) {
 
         </div>
 
+        {/* 달리기 파티클 */}
+
+<div className="running-particles">
+
+  {particles.map((particle) => (
+    <span
+      key={particle.id}
+
+      className={`
+        running-particle
+        particle-${particle.type}
+      `}
+
+      style={{
+        '--particle-x':
+          `${particle.offsetX}px`,
+
+        '--particle-y':
+          `${particle.offsetY}px`,
+      }}
+    />
+  ))}
+
+</div>
+
 
         {/* 장애물 */}
 
@@ -748,7 +1461,17 @@ function Game({ onBack }) {
                 left: `${obstacle.x}%`,
               }}
             >
-              {config.icon}
+
+              {config.image ? (
+                <img
+                  src={config.image}
+                  alt=""
+                  className="obstacle-image"
+                />
+              ) : (
+                config.icon
+              )}
+
             </div>
           )
         })}
@@ -850,70 +1573,325 @@ function Game({ onBack }) {
       ========================== */}
 
       {!isRunning && !isGameOver && (
-        <div className="game-start-screen">
+  <div className="game-start-screen">
 
-          <h1>
-            DREAM RUN
-          </h1>
+    <div className="game-start-window">
 
-          <p>
-            JUMP OVER
-          </p>
+      <p className="game-start-title">
+        DREAM RUN
+      </p>
 
-          <p>
-            SLIDE UNDER
-          </p>
+      <div className="game-start-stars">
+        ✦　·　✦
+      </div>
 
-          <p className="game-help">
-            SURVIVE AS LONG AS YOU CAN
-          </p>
+      <div className="game-start-guide">
 
-          <button
-            onClick={startGame}
-          >
-            START
-          </button>
+        <p>
+          <span>▲</span>
+          JUMP OVER
+        </p>
 
-        </div>
-      )}
+        <p>
+          <span>▼</span>
+          SLIDE UNDER
+        </p>
+
+      </div>
+
+      <p className="game-start-help">
+        EXPLORE YOUR DREAM ROAD
+      </p>
+
+      <button
+        className="game-start-button"
+        onClick={startGame}
+      >
+        START
+      </button>
+
+    </div>
+
+  </div>
+)}
 
 
-      {/* =========================
-          GAME OVER
-      ========================== */}
 
-      {isGameOver && (
-        <div className="game-over-screen">
+{/* =========================
+    GAME OVER / RANKING
+========================== */}
 
-          <p className="game-over-label">
+{isGameOver && (
+  <div className="game-over-screen">
+
+    <div className="game-over-window">
+
+      {rankingMode === null && (
+        <>
+          <p className="game-over-title">
             GAME OVER
           </p>
 
-          <h2>
-            DREAM{' '}
+          <div className="game-over-stars">
+            ✦　·　✦
+          </div>
+
+          <p className="game-over-score-label">
+            YOUR DREAM ROAD
+          </p>
+
+          <p className="game-over-score">
             {String(score).padStart(4, '0')}m
-          </h2>
+          </p>
+
+          <div className="score-save-area">
+
+            <input
+              className="ranking-nickname-input"
+              type="text"
+              value={nickname}
+              maxLength={10}
+              placeholder="NICKNAME"
+
+              onChange={(event) => {
+                const value =
+                  event.target.value
+
+                setNickname(value)
+                setNicknameError('')
+
+                localStorage.setItem(
+                  'dreamNickname',
+                  value
+                )
+              }}
+
+              onKeyDown={(event) => {
+                if (
+                  event.key === 'Enter'
+                ) {
+                  saveScore()
+                }
+              }}
+            />
+
+            {nicknameError && (
+              <p className="nickname-error">
+                {nicknameError}
+              </p>
+            )}
+
+            <button
+              className="save-score-button"
+              onClick={saveScore}
+              disabled={
+                !nickname.trim() ||
+                scoreSaved ||
+                scoreSaving
+              }
+            >
+              {scoreSaving
+                ? 'SAVING...'
+                : scoreSaved
+                ? 'SAVED!'
+                : 'SAVE SCORE'}
+            </button>
+
+          </div>
+
+          <div className="ranking-choice-buttons">
+
+            <button
+              className="ranking-open-button"
+              onClick={async () => {
+                await loadRanking()
+                setRankingMode('top')
+              }}
+            >
+              TOP RANKING
+            </button>
+
+            <button
+              className="ranking-open-button"
+              onClick={async () => {
+                await loadMyRanking()
+                setRankingMode('mine')
+              }}
+            >
+              MY RANKING
+            </button>
+
+          </div>
+
+          <div className="game-over-buttons">
+
+            <button
+              className="game-over-retry"
+              onClick={startGame}
+            >
+              RETRY
+            </button>
+
+            <button
+              className="game-over-back"
+              onClick={onBack}
+            >
+              BACK
+            </button>
+
+          </div>
+        </>
+      )}
+
+      {rankingMode === 'top' && (
+        <>
+          <p className="ranking-title">
+            DREAM RANKING
+          </p>
+
+          <div className="game-over-stars">
+            ✦　·　✦
+          </div>
+
+          <div className="ranking-list">
+
+            {rankingLoading ? (
+              <p className="ranking-empty">
+                LOADING...
+              </p>
+            ) : ranking.length === 0 ? (
+              <p className="ranking-empty">
+                NO RECORDS
+              </p>
+            ) : (
+              ranking.map(
+                (record, index) => (
+                  <div
+                    className="ranking-row"
+                    key={record.id}
+                  >
+                    <span className="ranking-number">
+                      {index + 1}
+                    </span>
+
+                    <span className="ranking-name">
+                      {record.nickname}
+                    </span>
+
+                    <span className="ranking-score">
+                      {String(
+                        record.score
+                      ).padStart(4, '0')}m
+                    </span>
+                  </div>
+                )
+              )
+            )}
+
+          </div>
 
           <button
-            onClick={startGame}
-          >
-            RETRY
-          </button>
-
-          <button
-            className="game-over-back"
-            onClick={onBack}
+            className="ranking-close-button"
+            onClick={() => {
+              setRankingMode(null)
+            }}
           >
             BACK
           </button>
-
-        </div>
+        </>
       )}
+
+      {rankingMode === 'mine' && (
+        <>
+          <p className="ranking-title">
+            MY RANKING
+          </p>
+
+          <div className="game-over-stars">
+            ✦　·　✦
+          </div>
+
+          {rankingLoading ? (
+            <p className="ranking-empty">
+              LOADING...
+            </p>
+          ) : myRankNumber === null ? (
+            <p className="ranking-empty">
+              SAVE YOUR SCORE FIRST
+            </p>
+          ) : (
+            <>
+              <p className="my-rank-label">
+                YOUR RANK
+              </p>
+
+              <p className="my-rank-number">
+                #{myRankNumber}
+              </p>
+
+              <div className="ranking-list">
+
+                {myRanking.map(
+                  (record) => {
+                    const isMe =
+                      record.player_id ===
+                      playerId
+
+                    return (
+                      <div
+                        className={`
+                          ranking-row
+                          ${
+                            isMe
+                              ? 'my-ranking-row'
+                              : ''
+                          }
+                        `}
+                        key={record.id}
+                      >
+                        <span className="ranking-number">
+                          {record.rank}
+                        </span>
+
+                        <span className="ranking-name">
+                          {record.nickname}
+                        </span>
+
+                        <span className="ranking-score">
+                          {String(
+                            record.score
+                          ).padStart(4, '0')}m
+                        </span>
+                      </div>
+                    )
+                  }
+                )}
+
+              </div>
+            </>
+          )}
+
+          <button
+            className="ranking-close-button"
+            onClick={() => {
+              setRankingMode(null)
+            }}
+          >
+            BACK
+          </button>
+        </>
+      )}
+
+    </div>
+
+  </div>
+)}
 
       <div className="pixel-screen-overlay" />
 
     </section>
   )
 }
+
 
 export default Game
