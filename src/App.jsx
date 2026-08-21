@@ -1,4 +1,10 @@
-import { useState } from 'react'
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useNavigate,
+} from 'react-router-dom'
+
 import './App.css'
 
 import Intro from './components/Intro'
@@ -11,121 +17,243 @@ import Guestbook from './components/Guestbook'
 import BirthdayCafe from './components/BirthdayCafe'
 
 
-
-function App() {
-  const [page, setPage] = useState('intro')
-
-  const isDreamPage =
-  page === 'intro' ||
-  page === 'map' ||
-  page === 'lucky' ||
-  page === 'wishSky' ||
-  page === 'guestbook' ||
-  page === 'cafe'
+function AppRoutes() {
+  const navigate = useNavigate()
 
   return (
     <main className="dream-page">
 
-      {/* =========================
-          INTRO / DREAM MAP
-          공통 배경 유지
-      ========================== */}
+      <Routes>
 
-      {isDreamPage && (
-        <div className="dream-shell">
+        {/* =========================
+            INTRO
+        ========================== */}
 
-          <DreamBackground />
+        <Route
+          path="/"
+          element={
+            <div className="dream-shell">
 
-          <div className="dream-content">
+              <DreamBackground />
 
-            {page === 'intro' && (
-              <Intro
-                onEnter={() =>
-                  setPage('map')
-                }
-              />
-            )}
+              <div className="dream-content">
+
+                <Intro
+                  onEnter={() =>
+                    navigate('/map')
+                  }
+                />
+
+              </div>
+
+            </div>
+          }
+        />
 
 
-            {page === 'map' && (
-            <DreamMap
-              onBack={() =>
-                setPage('intro')
-              }
+        {/* =========================
+            DREAM MAP
+        ========================== */}
 
-              onGame={() =>
-                setPage('game')
-              }
+        <Route
+          path="/map"
+          element={
+            <div className="dream-shell">
 
-              onLucky={() =>
-                setPage('lucky')
-              }
+              <DreamBackground />
 
-              onGuestbook={() =>
-                setPage('guestbook')
-              }
+              <div className="dream-content">
 
-              onCafe={() =>
-              setPage('cafe')
-            }
-            />
-          )}
+                <DreamMap
+                  onBack={() =>
+                    navigate(-1)
+                  }
 
-              {page === 'lucky' && (
+                  onGame={() =>
+                    navigate('/game')
+                  }
+
+                  onLucky={() =>
+                    navigate('/lucky')
+                  }
+
+                  onGuestbook={() =>
+                    navigate('/guestbook')
+                  }
+
+                  onCafe={() =>
+                    navigate('/cafe')
+                  }
+                />
+
+              </div>
+
+            </div>
+          }
+        />
+
+
+        {/* =========================
+            LUCKY HYEONI
+        ========================== */}
+
+        <Route
+          path="/lucky"
+          element={
+            <div className="dream-shell">
+
+              <DreamBackground />
+
+              <div className="dream-content">
+
                 <LuckyHyeoni
                   onBack={() =>
-                    setPage('map')
+                    navigate(-1)
                   }
 
                   onGo={() =>
-                    setPage('wishSky')
+                    navigate('/wishes')
                   }
                 />
-              )}
 
-              {page === 'wishSky' && (
-                <WishSky
-                  onBack={() =>
-                    setPage('map')
-                  }
-                />
-              )}
+              </div>
 
-              {page === 'guestbook' && (
-              <Guestbook
-                onBack={() =>
-                  setPage('map')
-                }
-              />
-            )}
-
-            {page === 'cafe' && (
-          <BirthdayCafe
-            onBack={() =>
-              setPage('map')
-            }
-          />
-        )}
-
-          </div>
-
-        </div>
-      )}
-
-
-      {/* =========================
-          GAME
-      ========================== */}
-
-      {page === 'game' && (
-        <Game
-          onBack={() =>
-            setPage('map')
+            </div>
           }
         />
-      )}
+
+
+        {/* =========================
+            WISH SKY
+        ========================== */}
+
+        <Route
+          path="/wishes"
+          element={
+            <div className="dream-shell">
+
+              <DreamBackground />
+
+              <div className="dream-content">
+
+                <WishSky
+                  onBack={() =>
+                    navigate(-1)
+                  }
+                />
+
+              </div>
+
+            </div>
+          }
+        />
+
+
+        {/* =========================
+            GUESTBOOK
+        ========================== */}
+
+        <Route
+          path="/guestbook"
+          element={
+            <div className="dream-shell">
+
+              <DreamBackground />
+
+              <div className="dream-content">
+
+                <Guestbook
+                  onBack={() =>
+                    navigate(-1)
+                  }
+                />
+
+              </div>
+
+            </div>
+          }
+        />
+
+
+        {/* =========================
+            BIRTHDAY CAFE
+        ========================== */}
+
+        <Route
+          path="/cafe"
+          element={
+            <div className="dream-shell">
+
+              <DreamBackground />
+
+              <div className="dream-content">
+
+                <BirthdayCafe
+                  onBack={() =>
+                    navigate(-1)
+                  }
+                />
+
+              </div>
+
+            </div>
+          }
+        />
+
+
+        {/* =========================
+            GAME
+        ========================== */}
+
+        <Route
+          path="/game"
+          element={
+            <Game
+              onBack={() =>
+                navigate(-1)
+              }
+            />
+          }
+        />
+
+
+        {/* =========================
+            잘못된 주소
+        ========================== */}
+
+        <Route
+          path="*"
+          element={
+            <div className="dream-shell">
+
+              <DreamBackground />
+
+              <div className="dream-content">
+
+                <Intro
+                  onEnter={() =>
+                    navigate('/map')
+                  }
+                />
+
+              </div>
+
+            </div>
+          }
+        />
+
+      </Routes>
 
     </main>
+  )
+}
+
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   )
 }
 
