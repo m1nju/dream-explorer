@@ -3,64 +3,46 @@
    Intro / DreamMap 공통 9:16 영역
 ================================ */
 
+
+/* ==============================
+   기본 : PC
+================================ */
+
 .dream-shell {
   position: relative;
 
   width:
     min(
       100vw,
-      calc(100svh * 9 / 16)
+      calc(100dvh * 9 / 16)
     );
 
-  height:
-    min(
-      100svh,
-      calc(100vw * 16 / 9)
-    );
-
-  aspect-ratio: 9 / 16;
+  height: 100dvh;
 
   margin: 0 auto;
 
   overflow: hidden;
 }
 
-
-/* 실제 페이지 콘텐츠 */
-
-.dream-content {
-  position: relative;
-
-  width: 100%;
-  height: 100%;
-
-  z-index: 10;
-}
 
 /* ==============================
-   INTRO / DREAM MAP 공통 프레임
+   모바일 : 화면 전체
 ================================ */
 
-.dream-shell {
-  position: relative;
+@media (max-width: 600px) {
 
-  width: min(
-    100vw,
-    calc(100svh * 9 / 16)
-  );
+  .dream-shell {
+    width: 100vw;
 
-  height: min(
-    100svh,
-    calc(100vw * 16 / 9)
-  );
+    height: 100vh;
+    height: 100dvh;
 
-  aspect-ratio: 9 / 16;
+    margin: 0;
 
-  margin: 0 auto;
+    aspect-ratio: auto;
+  }
 
-  overflow: hidden;
 }
-
 
 /* Intro / DreamMap이 올라가는 영역 */
 

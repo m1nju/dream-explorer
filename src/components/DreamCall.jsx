@@ -13,6 +13,7 @@ import hyeon5 from '../assets/hyeon5.png'
 import hyeon6 from '../assets/hyeon6.png'
 import hyeon7 from '../assets/hyeon7.png'
 import hyeon8 from '../assets/hyeon8.png'
+import hyeon9 from '../assets/hyeon9.png'
 
 function DreamCall({ onBack }) {
 
@@ -566,7 +567,7 @@ useEffect(() => {
 
 
 'hallucination-bad': {
-  image: hyeon7,
+  image: hyeon9,
 
   name: 'HYEONIE',
 
