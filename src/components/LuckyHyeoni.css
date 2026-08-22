@@ -1360,3 +1360,217 @@
       rotate(1.5deg);
   }
 }
+
+/* ==================================
+   RUB PARTICLES
+================================== */
+
+.rub-particle-layer {
+  position: absolute;
+  inset: 0;
+
+  z-index: 20;
+
+  overflow: visible;
+
+  pointer-events: none;
+}
+
+
+.rub-particle {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  pointer-events: none;
+
+  transform:
+    translate(-50%, -50%);
+
+  animation:
+    rubParticlePop
+    0.75s
+    ease-out
+    forwards;
+}
+
+
+/* 별 */
+
+.rub-particle.star {
+  color: #fffbe8;
+
+  font-size:
+    var(--rub-size);
+
+  line-height: 1;
+
+  text-shadow:
+    0 0 4px
+      rgba(255, 255, 255, 0.95),
+
+    0 0 9px
+      rgba(255, 239, 165, 0.8),
+
+    0 0 16px
+      rgba(205, 183, 255, 0.6);
+}
+
+
+/* 작은 빛알 */
+
+.rub-particle.dot {
+  width:
+    calc(
+      var(--rub-size) * 0.38
+    );
+
+  height:
+    calc(
+      var(--rub-size) * 0.38
+    );
+
+  border-radius: 50%;
+
+  background:
+    rgba(
+      255,
+      250,
+      215,
+      0.95
+    );
+
+  box-shadow:
+    0 0 5px #fff,
+    0 0 10px
+      rgba(255, 229, 155, 0.8);
+}
+
+
+/* 몽글한 빛 */
+
+.rub-particle.glow {
+  width:
+    var(--rub-size);
+
+  height:
+    var(--rub-size);
+
+  border-radius: 50%;
+
+  background:
+    rgba(
+      235,
+      222,
+      255,
+      0.65
+    );
+
+  filter:
+    blur(2px);
+
+  box-shadow:
+    0 0 10px
+      rgba(255, 255, 255, 0.8),
+
+    0 0 18px
+      rgba(190, 174, 255, 0.6);
+}
+
+
+@keyframes rubParticlePop {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.3)
+      rotate(0);
+  }
+
+
+  18% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(
+        calc(-50% + var(--rub-x)),
+        calc(-50% + var(--rub-y))
+      )
+      scale(0.3)
+      rotate(
+        var(--rub-rotate)
+      );
+  }
+}
+
+.lamp-area.is-rubbing
+.magic-lamp {
+  animation:
+    lampRubWiggle
+    0.38s
+    ease-in-out
+    infinite;
+
+  transform-origin:
+    50% 75%;
+}
+
+
+@keyframes lampRubWiggle {
+
+  0% {
+    transform:
+      translate(0, 0)
+      rotate(-2deg);
+  }
+
+  25% {
+    transform:
+      translate(-5px, -3px)
+      rotate(-4deg);
+  }
+
+  50% {
+    transform:
+      translate(2px, 1px)
+      rotate(1deg);
+  }
+
+  75% {
+    transform:
+      translate(5px, -4px)
+      rotate(4deg);
+  }
+
+  100% {
+    transform:
+      translate(0, 0)
+      rotate(-2deg);
+  }
+}
+
+.magic-lamp {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+
+  cursor: grab;
+}
+
+.lamp-area.is-rubbing
+.magic-lamp {
+  cursor: grabbing;
+}

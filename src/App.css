@@ -72,3 +72,47 @@
 
   z-index: 10;
 }
+
+/* ==============================
+   BGM TOGGLE
+============================== */
+.bgm-toggle {
+  position: fixed;
+
+  top: 16px;
+
+  /* 배경 영역 왼쪽 끝에서 16px 안쪽 */
+  left:
+    max(
+      16px,
+      calc((100vw - 430px) / 2 + 16px)
+    );
+
+  right: auto;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 5px 2px;
+
+  border: 0;
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.3);
+
+  border-radius: 0;
+
+  background: transparent;
+
+  color: rgba(255, 255, 255, 0.8);
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 7px;
+
+  cursor: pointer;
+}

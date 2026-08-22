@@ -1226,76 +1226,127 @@
     2.05s;
 }
 
-
-.enter-button {
+.final-title .enter-button {
   position: relative;
 
-  min-width: 150px;
+  min-width: 0;
 
-  padding:
-    12px 24px;
+  margin-top: 8px;
+  padding: 7px 4px 9px;
 
-  border:
-    1px solid
-    rgba(255, 255, 255, 0.82);
+  border: 0;
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.35);
 
-  border-radius:
-    999px;
+  border-radius: 0;
 
-  background:
-    rgba(255, 255, 255, 0.11);
+  background: transparent;
 
-  backdrop-filter:
-    blur(8px);
+  box-shadow: none;
 
-  color: white;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  color:
+    rgba(255, 255, 255, 0.88);
 
   font-family:
-    'Press Start 2P',
-    monospace;
+    'DungGeunMo',
+    sans-serif;
 
-  font-size:
-    clamp(
-      6px,
-      1svh,
-      8px
-    );
+  font-size: 14px;
 
-  line-height: 1.3;
+  font-weight: 400;
 
-  letter-spacing:
-    1.6px;
+  letter-spacing: 0.08em;
 
-  box-shadow:
-    0 3px 0
-    rgba(139, 145, 218, 0.35),
-
-    0 6px 10px
-    rgba(88, 102, 176, 0.15);
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.35),
+    0 0 16px rgba(191, 181, 255, 0.2);
 
   cursor: pointer;
 
   transition:
-    transform 0.2s ease,
-    background 0.2s ease;
-
-  -webkit-tap-highlight-color:
-    transparent;
+    color 0.35s ease,
+    text-shadow 0.35s ease,
+    letter-spacing 0.35s ease;
 }
 
 
-.enter-button:hover {
-  transform:
-    translateY(-2px);
-
-  background:
-    rgba(255, 255, 255, 0.2);
+/* 기존 버튼 위쪽 선 같은 가상요소 제거 */
+.final-title .enter-button::before,
+.final-title .enter-button::after {
+  content: none !important;
+  display: none !important;
 }
 
 
-.enter-button:active {
+.final-title .enter-star {
+  display: inline-block;
+
+  margin-right: 9px;
+
+  font-size: 9px;
+
+  opacity: 0.65;
+
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
+}
+
+
+.final-title .enter-arrow {
+  display: inline-block;
+
+  margin-left: 9px;
+
+  font-size: 12px;
+
+  opacity: 0.6;
+
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease;
+}
+
+
+.final-title .enter-button:hover {
+  transform: none;
+
+  background: transparent;
+
+  box-shadow: none;
+
+  color: #ffffff;
+
+  letter-spacing: 0.12em;
+
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.55),
+    0 0 20px rgba(190, 178, 255, 0.4);
+}
+
+
+.final-title .enter-button:hover .enter-star {
+  opacity: 1;
+
   transform:
-    translateY(2px);
+    rotate(90deg)
+    scale(1.15);
+}
+
+
+.final-title .enter-button:hover .enter-arrow {
+  opacity: 1;
+
+  transform:
+    translateX(4px);
+}
+
+
+.final-title .enter-button:active {
+  transform: none;
 }
 
 
@@ -1363,4 +1414,510 @@
     min-width: 145px;
   }
 
+}
+
+/* ==================================
+   OPENING SEQUENCE
+================================== */
+
+.opening-sequence {
+  position: absolute;
+  inset: 0;
+
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+
+/* ==================================
+   BLACK SCREEN
+================================== */
+
+.opening-black {
+  position: absolute;
+  inset: 0;
+
+  z-index: 51;
+
+  background: #000;
+}
+
+
+/* ==================================
+   NARRATION
+================================== */
+
+.opening-narration {
+  position: relative;
+  z-index: 55;
+
+  margin: 0;
+
+  padding: 24px;
+
+  color: rgba(255, 255, 255, 0.92);
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size:
+    clamp(
+      15px,
+      2.2vw,
+      20px
+    );
+
+  line-height: 1.8;
+
+  letter-spacing: -0.3px;
+
+  text-align: center;
+
+  animation:
+    openingNarrationAppear
+    3.2s
+    ease
+    both;
+}
+
+
+.opening-narration p {
+  margin:
+    0
+    0
+    22px;
+}
+
+
+.opening-narration p:last-child {
+  margin-bottom: 0;
+}
+
+
+@keyframes openingNarrationAppear {
+  0% {
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  82% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ==================================
+   DREAM NARRATION
+================================== */
+
+.dream-narration {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.95
+    );
+
+  text-shadow:
+    0 2px 8px
+      rgba(39, 31, 91, 0.8),
+
+    0 0 18px
+      rgba(170, 160, 255, 0.45);
+}
+
+
+
+/* ==================================
+   EYE BLINK
+================================== */
+
+.blink-screen {
+  position: absolute;
+  inset: 0;
+
+  z-index: 60;
+
+  pointer-events: none;
+}
+
+
+.eyelid {
+  position: absolute;
+
+  left: -5%;
+
+  width: 110%;
+
+  height: 52%;
+
+  background: #000;
+
+  z-index: 60;
+}
+
+
+.eyelid-top {
+  top: 0;
+
+  transform-origin: top;
+
+  animation:
+    eyeTopBlink
+    3.8s
+    ease-in-out
+    forwards;
+}
+
+
+.eyelid-bottom {
+  bottom: 0;
+
+  transform-origin: bottom;
+
+  animation:
+    eyeBottomBlink
+    3.8s
+    ease-in-out
+    forwards;
+}
+
+
+@keyframes eyeTopBlink {
+  0% {
+    transform: translateY(0);
+  }
+
+  20% {
+    transform: translateY(-70%);
+  }
+
+  38% {
+    transform: translateY(0);
+  }
+
+  58% {
+    transform: translateY(-45%);
+  }
+
+  72% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-105%);
+  }
+}
+
+@keyframes eyeBottomBlink {
+  0% {
+    transform: translateY(0);
+  }
+
+  20% {
+    transform: translateY(70%);
+  }
+
+  38% {
+    transform: translateY(0);
+  }
+
+  58% {
+    transform: translateY(45%);
+  }
+
+  72% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(105%);
+  }
+}
+
+
+/* ==================================
+   FINAL TITLE - CLEAN VERSION
+================================== */
+
+.final-title {
+  position: relative;
+  z-index: 70;
+
+  width: min(88vw, 720px);
+
+  text-align: center;
+
+  animation:
+    finalTitleAppear
+    1.2s
+    ease
+    both;
+}
+
+
+/* 최종 타이틀 안에서는 기존 화려한 효과 제거 */
+
+.final-title .dream-text,
+.final-title .dream-main-title {
+  background: none !important;
+
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+
+  -webkit-text-fill-color: #ffffff !important;
+
+  -webkit-text-stroke: 0 !important;
+
+  color: #ffffff !important;
+
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.28),
+    0 0 18px rgba(197, 210, 255, 0.26),
+    0 0 32px rgba(166, 147, 255, 0.16);
+
+  font-family:
+    'DungGeunMo',
+    sans-serif !important;
+
+  font-weight: 400 !important;
+
+  letter-spacing: 0 !important;
+}
+
+
+/* 첫 문장 */
+
+.final-title .dream-text-small {
+  margin:
+    0 0
+    10px;
+
+  font-size:
+    clamp(13px, 1.8vw, 17px);
+
+  line-height: 1.5;
+
+  opacity: 0.82;
+}
+
+
+/* 두 번째 문장 */
+
+.final-title .dream-text-medium {
+  margin:
+    0 0
+    16px;
+
+  font-size:
+    clamp(14px, 2vw, 18px);
+
+  line-height: 1.5;
+
+  opacity: 0.92;
+}
+
+
+/* "상상이 현실이 되는" */
+
+.final-title .line-3 > .dream-text-medium {
+  margin-bottom: 9px;
+
+  font-size:
+    clamp(13px, 1.8vw, 16px);
+
+  opacity: 0.72;
+
+  letter-spacing:
+    0.08em !important;
+}
+
+
+/* 메인 제목 */
+
+.final-title .dream-main-title {
+  margin:
+    0 0
+    34px;
+
+  font-size:
+    clamp(54px, 8vw, 82px);
+
+  line-height: 1;
+
+  font-weight: 700 !important;
+
+  letter-spacing:
+    -0.06em !important;
+
+  text-shadow:
+    0 0 5px rgba(255, 255, 255, 0.5),
+    0 0 14px rgba(221, 225, 255, 0.5),
+    0 0 28px rgba(181, 167, 255, 0.38),
+    0 0 46px rgba(143, 134, 255, 0.18);
+}
+
+
+/* 탐험하기 버튼 */
+.final-title .enter-button {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+
+  display: inline-block;
+
+  min-width: 0 !important;
+
+  margin-top: 12px;
+  padding: 8px 3px !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+
+  background: none !important;
+  background-image: none !important;
+
+  box-shadow: none !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  color: rgba(255, 255, 255, 0.8);
+
+  font-family:
+    'DungGeunMo',
+    sans-serif !important;
+
+  font-size: 13px;
+
+  font-weight: 400;
+
+  letter-spacing: 0.12em;
+
+  text-shadow:
+    0 0 7px rgba(255, 255, 255, 0.35),
+    0 0 15px rgba(190, 180, 255, 0.25);
+
+  cursor: pointer;
+
+  transition:
+    color 0.3s ease,
+    text-shadow 0.3s ease,
+    letter-spacing 0.3s ease;
+}
+
+
+/* 옛날 버튼 장식도 전부 제거 */
+
+.final-title .enter-button::before,
+.final-title .enter-button::after {
+  content: none !important;
+  display: none !important;
+}
+
+
+/* hover */
+
+.final-title .enter-button:hover {
+  background: none !important;
+  box-shadow: none !important;
+
+  color: #ffffff;
+
+  letter-spacing: 0.17em;
+
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.65),
+    0 0 20px rgba(187, 173, 255, 0.5);
+
+  transform: none !important;
+}
+
+
+.final-title .enter-button:active {
+  transform: none !important;
+}
+
+/* 최종 타이틀에서는 기존 복제 글자 제거 */
+
+.final-title .dream-text::before,
+.final-title .dream-text::after,
+.final-title .dream-main-title::before,
+.final-title .dream-main-title::after {
+  content: none !important;
+  display: none !important;
+}
+
+.final-title .dream-text,
+.final-title .dream-main-title {
+  filter: none !important;
+}
+
+.final-title .dream-text-small,
+.final-title .dream-text-medium {
+  color: #ffffff !important;
+
+  text-shadow:
+    0 0 5px rgba(255, 255, 255, 0.45),
+    0 0 12px rgba(214, 220, 255, 0.35),
+    0 0 22px rgba(170, 160, 255, 0.2);
+}
+
+/* ==================================
+   SKIP
+================================== */
+
+.opening-skip {
+  position: absolute;
+
+  top: 24px;
+  right: 24px;
+
+  z-index: 100;
+
+  padding:
+    8px
+    10px;
+
+  border: 0;
+
+  background: transparent;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.55
+    );
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 8px;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease;
+}
+
+
+.opening-skip:hover {
+  color: #fff;
 }

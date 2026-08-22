@@ -24,6 +24,166 @@
   color: white;
 }
 
+/* ==============================
+   HYEONI CLICK EASTER EGG
+================================ */
+
+.hyeon-click-area {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* 사진 */
+
+.hyeon-clickable {
+  cursor: pointer;
+
+  user-select: none;
+  -webkit-user-drag: none;
+
+  transition:
+    transform 0.12s ease;
+}
+
+
+.hyeon-clickable:active {
+  transform:
+    scale(0.96);
+}
+
+.moon-option-button {
+  width: 100%;
+
+  padding: 11px 14px;
+
+  border:
+    1px solid
+    rgba(220, 230, 255, 0.45);
+
+  border-radius: 10px;
+
+  background:
+    rgba(20, 25, 55, 0.45);
+
+  color: white;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 14px;
+
+  line-height: 1.2;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
+}
+
+.moon-option-button:hover {
+  background:
+    rgba(255, 255, 255, 0.12);
+}
+
+.moon-option-button:active {
+  transform: scale(0.98);
+}
+
+/* 작은 반응 말풍선 */
+
+.hyeon-click-bubble {
+  position: absolute;
+
+  z-index: 20;
+
+  top: 5px;
+  left: calc(100% + 8px);
+
+  width: max-content;
+  max-width: 130px;
+
+  box-sizing: border-box;
+
+  padding:
+    6px
+    9px;
+
+  border-radius: 10px;
+
+  background:
+    rgba(244, 247, 255, 0.94);
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 13px;
+
+  line-height: 1.2;
+
+  color: #515979;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+
+  animation:
+    hyeonBubbleAppear
+    0.2s ease both;
+}
+
+
+/* 말풍선 꼬리 */
+
+.hyeon-click-bubble::before {
+  content: '';
+
+  position: absolute;
+
+  left: -5px;
+  top: 50%;
+
+  width: 9px;
+  height: 9px;
+
+  background:
+    rgba(244, 247, 255, 0.94);
+
+  transform:
+    translateY(-50%)
+    rotate(45deg);
+}
+
+
+@keyframes hyeonBubbleAppear {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateX(-4px)
+      scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateX(0)
+      scale(1);
+  }
+
+}
+
 
 /* ==============================
    COMMON PANEL
@@ -575,13 +735,13 @@
 
   font-size:
     clamp(
-      17px,
+      14px,
       2.2svh,
       20px
     );
 
   line-height:
-    1.4;
+    1.0;
 
   color:
     #f4f8ff;
@@ -733,6 +893,27 @@
     #ffb9d8;
 }
 
+.record-section-title {
+  margin: 12px 3px 6px;
+  padding-top: 8px;
+
+  border-top:
+    1px solid
+    rgba(205, 221, 255, 0.2);
+
+  /* CALL RECORD랑 같은 폰트 */
+  font-family: inherit;
+
+  /* 크기도 작게 */
+  font-size: 8px;
+
+  line-height: 1;
+
+  letter-spacing: 0.5px;
+
+  color:
+    rgba(214, 203, 255, 0.65);
+}
 
 .ending-screen h1 {
   position: relative;
@@ -877,7 +1058,7 @@
     monospace;
 
   font-size:
-    5px;
+    8px;
 
   color:
     rgba(202, 218, 244, 0.68);
@@ -1101,7 +1282,7 @@
     'Press Start 2P',
     monospace;
 
-  font-size: 5px;
+  font-size: 8px;
 
   letter-spacing: 0.5px;
 
@@ -1251,6 +1432,51 @@
   font-size: 6px;
 }
 
+.dialogue-line-appear {
+  animation:
+    dialogueLineAppear
+    0.28s
+    ease
+    both;
+}
+
+@keyframes dialogueLineAppear {
+  from {
+    opacity: 0;
+    transform:
+      translateY(3px);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0);
+  }
+}
+
+.dialogue-options-appear {
+  animation:
+    dialogueOptionsAppear
+    0.45s
+    ease
+    both;
+}
+
+@keyframes dialogueOptionsAppear {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
 
 /* 닫기 버튼 */
 
@@ -1396,6 +1622,65 @@
   opacity: 0.42;
 }
 
+/* ==============================
+   EASTER EGG RECORD
+================================ */
+
+.call-record-item.easter {
+  position: relative;
+
+  background:
+    rgba(211, 196, 255, 0.07);
+
+  border-color:
+    rgba(211, 196, 255, 0.28);
+}
+
+
+/* 발견 전 */
+.call-record-item.easter.locked {
+  opacity: 0.72;
+
+  border-style: dashed;
+}
+
+
+/* 발견 후 */
+.call-record-item.easter.found {
+  opacity: 1;
+
+  background:
+    rgba(211, 196, 255, 0.12);
+
+  border-color:
+    rgba(220, 206, 255, 0.55);
+}
+
+
+/* 이스터에그 아이콘 */
+.call-record-item.easter
+.record-icon {
+  color:
+    rgba(221, 210, 255, 0.85);
+}
+
+
+/* 이스터에그 이름 */
+.call-record-item.easter
+.record-name {
+  color:
+    rgba(226, 217, 255, 0.9);
+}
+
+
+/* 미발견 힌트는 살짝 흐리게 */
+.call-record-item.easter.locked
+.record-name {
+  opacity: 0.72;
+
+  letter-spacing: 0.5px;
+}
+
 
 /* ==============================
    ITEM TEXT
@@ -1494,4 +1779,1532 @@
   font-size: 5px;
 
   cursor: pointer;
+}
+
+/* ==============================
+   STAR MINI GAME
+================================ */
+
+.star-game-screen,
+.star-watch-screen {
+  position: relative;
+
+  width: min(88%, 340px);
+  height: 430px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border:
+    2px solid
+    rgba(177, 213, 255, 0.68);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(76, 104, 173, 0.34),
+      rgba(64, 75, 141, 0.3)
+    );
+
+  backdrop-filter: blur(8px);
+
+  box-shadow:
+    inset 0 0 0 2px
+    rgba(255, 255, 255, 0.05);
+}
+
+
+/* 안쪽 픽셀 프레임 */
+
+.star-game-screen::before,
+.star-watch-screen::before {
+  content: '';
+
+  position: absolute;
+
+  inset: 6px;
+
+  border:
+    1px solid
+    rgba(197, 222, 255, 0.22);
+
+  pointer-events: none;
+}
+
+/* ==============================
+   ENDING DIALOGUE
+   결과창 위쪽 혀니 대화 전체
+================================ */
+
+.ending-dialogue {
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 14px;
+
+  line-height: 1.25;
+}
+
+.ending-dialogue p {
+  margin:
+    0 0
+    6px;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+}
+
+.ending-dialogue p:last-child {
+  margin-bottom: 0;
+}
+
+/* ==============================
+   ENDING RESULT TEXT
+================================ */
+
+.ending-result {
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+}
+
+
+/* 결과창 안의 모든 텍스트 */
+
+.ending-result p,
+.ending-result span,
+.ending-result strong {
+  font-family:
+    'DungGeunMo',
+    sans-serif !important;
+
+  font-weight: normal;
+}
+
+
+/* 메인 한글 문장 */
+
+.ending-result p {
+  margin:
+    0 0
+    12px;
+
+  font-size: 14px;
+
+  line-height: 1.3;
+}
+
+
+/* 상태 / 설명 */
+
+.ending-result span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 10px;
+
+  line-height: 0.9;
+}
+
+
+/* 강조 문장 */
+
+.ending-result strong {
+  display: block;
+
+  margin-top: 10px;
+
+  font-size: 16px;
+
+  line-height: 1.35;
+}
+
+
+.ending-result span:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ==============================
+   GUIDE
+================================ */
+
+.star-game-guide {
+  position: absolute;
+
+  top: 24px;
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  z-index: 3;
+
+  width: max-content;
+
+  margin: 0;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 17px;
+
+  color: #edf6ff;
+
+  text-shadow:
+    0 0 7px
+    rgba(180, 215, 255, 0.55);
+
+  animation:
+    starGuideBlink
+    1.3s
+    steps(2)
+    infinite;
+}
+
+
+@keyframes starGuideBlink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0.45;
+  }
+}
+
+
+/* ==============================
+   FALLING STAR
+================================ */
+
+.falling-star {
+  position: absolute;
+
+  left: 50%;
+  top: -40px;
+
+  z-index: 5;
+
+  width: 64px;
+  height: 64px;
+
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  color: #fff2a8;
+
+  font-size: 36px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  text-shadow:
+    0 0 6px #ffffff,
+    0 0 12px #ffe88a,
+    0 0 20px rgba(182, 177, 255, 0.8);
+
+  transform:
+    translateX(-50%);
+
+  animation:
+    fallingStarMove
+    5.2s
+    linear
+    infinite;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/*
+  실제 별보다 클릭 영역은 크게 유지하면서
+  시각적으로는 중앙에만 별이 보임
+*/
+
+.falling-star::before {
+  content: '✦';
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform:
+    translate(-50%, -50%);
+
+  font-size: 12px;
+
+  color: #ffffff;
+
+  opacity: 0.9;
+}
+
+
+@keyframes fallingStarMove {
+
+  0% {
+    top: -50px;
+
+    transform:
+      translateX(-50%)
+      translateX(-55px)
+      rotate(-12deg)
+      scale(0.85);
+  }
+
+  20% {
+    transform:
+      translateX(-50%)
+      translateX(35px)
+      rotate(8deg)
+      scale(1);
+  }
+
+  40% {
+    transform:
+      translateX(-50%)
+      translateX(-28px)
+      rotate(-6deg)
+      scale(0.92);
+  }
+
+  60% {
+    transform:
+      translateX(-50%)
+      translateX(42px)
+      rotate(10deg)
+      scale(1.03);
+  }
+
+  80% {
+    transform:
+      translateX(-50%)
+      translateX(-18px)
+      rotate(-4deg)
+      scale(0.96);
+  }
+
+  100% {
+    top: 390px;
+
+    transform:
+      translateX(-50%)
+      translateX(20px)
+      rotate(7deg)
+      scale(0.9);
+  }
+}
+
+
+/* ==============================
+   STAR TAIL
+================================ */
+
+.falling-star {
+  filter:
+    drop-shadow(
+      -8px 8px 0
+      rgba(255, 233, 140, 0.55)
+    )
+    drop-shadow(
+      -16px 16px 0
+      rgba(190, 199, 255, 0.25)
+    );
+}
+
+
+/* ==============================
+   CAUGHT STAR
+================================ */
+
+.caught-star {
+  position: relative;
+
+  z-index: 5;
+
+  font-size: 58px;
+
+  color: #fff2a8;
+
+  text-shadow:
+    0 0 8px #ffffff,
+    0 0 18px #ffe993,
+    0 0 32px rgba(190, 182, 255, 0.9);
+
+  animation:
+    caughtStarPop
+    0.7s
+    cubic-bezier(
+      0.22,
+      1,
+      0.36,
+      1
+    )
+    forwards;
+}
+
+
+@keyframes caughtStarPop {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      scale(0.3)
+      rotate(-25deg);
+  }
+
+  45% {
+    opacity: 1;
+
+    transform:
+      scale(1.35)
+      rotate(10deg);
+  }
+
+  70% {
+    transform:
+      scale(0.92)
+      rotate(-4deg);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      scale(1)
+      rotate(0deg);
+  }
+}
+
+
+/* ==============================
+   WATCH STAR
+================================ */
+
+.star-watch-screen {
+  flex-direction: column;
+
+  text-align: center;
+}
+
+
+.star-watch-text {
+  position: absolute;
+
+  top: 34px;
+
+  z-index: 3;
+
+  margin: 0;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 18px;
+
+  color:
+    rgba(230, 241, 255, 0.75);
+}
+
+
+.watching-star {
+  position: absolute;
+
+  left: 50%;
+  top: 35px;
+
+  z-index: 4;
+
+  color: #fff1a2;
+
+  font-size: 34px;
+
+  text-shadow:
+    0 0 6px #ffffff,
+    0 0 14px #ffe78c,
+    0 0 22px rgba(170, 180, 255, 0.72);
+
+  animation:
+    watchingStarFall
+    4s
+    ease-in
+    forwards;
+}
+
+
+@keyframes watchingStarFall {
+
+  0% {
+    opacity: 1;
+
+    transform:
+      translateX(-50%)
+      translateX(-38px)
+      translateY(0)
+      rotate(-8deg)
+      scale(1);
+  }
+
+  25% {
+    transform:
+      translateX(-50%)
+      translateX(25px)
+      translateY(75px)
+      rotate(5deg)
+      scale(0.98);
+  }
+
+  50% {
+    transform:
+      translateX(-50%)
+      translateX(-20px)
+      translateY(160px)
+      rotate(-4deg)
+      scale(0.9);
+  }
+
+  75% {
+    opacity: 0.75;
+
+    transform:
+      translateX(-50%)
+      translateX(32px)
+      translateY(245px)
+      rotate(7deg)
+      scale(0.78);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translateX(-50%)
+      translateX(10px)
+      translateY(355px)
+      rotate(10deg)
+      scale(0.55);
+  }
+}
+
+/* ==============================
+   CLOUD MEMORY
+================================ */
+
+.cloud-memory-screen {
+  position: relative;
+
+  width: min(88%, 340px);
+  height: 430px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 28px 22px;
+
+  overflow: hidden;
+
+  border:
+    2px solid
+    rgba(177, 213, 255, 0.68);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(76, 104, 173, 0.34),
+      rgba(64, 75, 141, 0.30)
+    );
+
+  backdrop-filter:
+    blur(8px);
+}
+
+
+/* ==============================
+   CHARACTER
+================================ */
+
+.cloud-memory-character {
+  position: relative;
+
+  z-index: 3;
+
+  transition:
+    opacity 1.2s ease,
+    filter 1.2s ease;
+}
+
+
+.cloud-fade-0 {
+  opacity: 1;
+}
+
+
+.cloud-fade-1 {
+  opacity: 0.78;
+
+  filter:
+    blur(0.3px);
+}
+
+
+.cloud-fade-2 {
+  opacity: 0.48;
+
+  filter:
+    blur(1px);
+}
+
+
+.cloud-fade-3 {
+  opacity: 0.16;
+
+  filter:
+    blur(2px);
+}
+
+
+/* ==============================
+   MEMORY DIALOGUE
+================================ */
+
+.cloud-memory-dialogue {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  margin-top: 14px;
+
+  padding:
+    15px
+    14px;
+
+  border:
+    1px solid
+    rgba(197, 220, 255, 0.48);
+
+  background:
+    rgba(240, 247, 255, 0.07);
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 17px;
+
+  line-height: 1.45;
+
+  text-align: center;
+
+  color: #edf5ff;
+
+  transition:
+    opacity 1s ease,
+    filter 1s ease;
+}
+
+
+.cloud-memory-dialogue p {
+  margin:
+    0 0
+    10px;
+}
+
+
+.cloud-memory-dialogue p:last-child {
+  margin-bottom: 0;
+}
+
+
+.memory-fading {
+  opacity: 0.76;
+
+  filter:
+    blur(0.25px);
+}
+
+
+.memory-fading-more {
+  opacity: 0.48;
+
+  filter:
+    blur(0.8px);
+}
+
+
+.memory-almost-gone {
+  opacity: 0.16;
+
+  filter:
+    blur(1.8px);
+}
+
+
+/* ==============================
+   DREAM FILE ICON
+================================ */
+
+.dream-file {
+  position: relative;
+
+  z-index: 5;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 12px;
+
+  border: 0;
+
+  background: transparent;
+
+  color:
+    rgba(235, 244, 255, 0.88);
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  animation:
+    dreamFileAppear
+    0.7s
+    ease
+    both;
+}
+
+
+/* 파일 아이콘 */
+
+.dream-file-icon {
+  position: relative;
+
+  width: 34px;
+  height: 42px;
+
+  box-sizing: border-box;
+
+  display: block;
+
+  border:
+    2px solid
+    rgba(218, 233, 255, 0.72);
+
+  background:
+    rgba(232, 242, 255, 0.08);
+
+  box-shadow:
+    3px 3px 0
+    rgba(98, 123, 192, 0.26);
+}
+
+
+/* 접힌 모서리 */
+
+.dream-file-icon::before {
+  content: '';
+
+  position: absolute;
+
+  top: -2px;
+  right: -2px;
+
+  width: 11px;
+  height: 11px;
+
+  box-sizing: border-box;
+
+  border-left:
+    2px solid
+    rgba(218, 233, 255, 0.72);
+
+  border-bottom:
+    2px solid
+    rgba(218, 233, 255, 0.72);
+
+  background:
+    rgba(95, 116, 176, 0.55);
+}
+
+
+/* 문서 안쪽 줄 */
+
+.dream-file-icon::after {
+  content: '';
+
+  position: absolute;
+
+  left: 7px;
+  top: 16px;
+
+  width: 16px;
+  height: 2px;
+
+  background:
+    rgba(218, 233, 255, 0.58);
+
+  box-shadow:
+    0 6px 0
+    rgba(218, 233, 255, 0.42),
+
+    0 12px 0
+    rgba(218, 233, 255, 0.28);
+}
+
+
+@keyframes dreamFileAppear {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(10px)
+      scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+/* ==============================
+   DREAM TXT WINDOW
+================================ */
+
+.dream-file-window {
+  position: relative;
+
+  z-index: 6;
+
+  width: 100%;
+  max-width: 285px;
+
+  box-sizing: border-box;
+
+  padding:
+    18px
+    16px
+    14px;
+
+  /*
+    윈도우창처럼 보이지 않고
+    꿈속 메모지처럼
+  */
+
+  border:
+    1px solid
+    rgba(210, 229, 255, 0.32);
+
+  background:
+    rgba(224, 237, 255, 0.085);
+
+  backdrop-filter:
+    blur(10px);
+
+  box-shadow:
+    inset 0 0 18px
+    rgba(230, 240, 255, 0.035);
+
+  animation:
+    dreamFileOpen
+    0.4s
+    ease
+    both;
+}
+
+
+/* 상단에 파일명만 */
+
+.dream-file-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding:
+    0 0
+    10px;
+
+  margin-bottom:
+    13px;
+
+  border-bottom:
+    1px dashed
+    rgba(210, 229, 255, 0.26);
+
+  background: transparent;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 13px;
+
+  color:
+    rgba(218, 235, 255, 0.72);
+}
+
+
+/* 기존 × 숨기기 */
+
+.dream-file-header span:last-child {
+  display: none;
+}
+
+
+/* 본문 */
+
+.dream-file-content {
+  padding: 0;
+
+  text-align: left;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 15px;
+
+  line-height: 1.55;
+
+  color:
+    rgba(242, 247, 255, 0.92);
+}
+
+
+.dream-file-content p {
+  margin:
+    0 0
+    15px;
+}
+
+
+.dream-file-content p:last-child {
+  margin-bottom:
+    10px;
+}
+
+
+/* 확인 */
+
+.dream-file-confirm {
+  display: block;
+
+  margin:
+    8px
+    0
+    0
+    auto;
+
+  padding:
+    7px
+    10px;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color:
+    rgba(195, 220, 255, 0.72);
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  transition:
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+
+.dream-file-confirm::before {
+  content: '▶ ';
+
+  font-size: 9px;
+}
+
+
+.dream-file-confirm:hover {
+  color:
+    rgba(240, 247, 255, 0.95);
+}
+
+
+.dream-file-confirm:active {
+  transform:
+    translateX(2px);
+}
+
+
+@keyframes dreamFileOpen {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(7px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+/* ==============================
+   MOON CLOCK
+================================ */
+
+.moon-clock-screen {
+  position: relative;
+
+  width: min(88%, 340px);
+  height: 430px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 26px 20px;
+
+  overflow: hidden;
+
+  border:
+    2px solid
+    rgba(177, 213, 255, 0.68);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(76, 104, 173, 0.34),
+      rgba(64, 75, 141, 0.30)
+    );
+
+  backdrop-filter:
+    blur(8px);
+}
+
+
+/* ==============================
+   CLOCK DISPLAY
+================================ */
+
+.moon-clock-display {
+  position: relative;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding:
+    24px
+    14px;
+
+  text-align: center;
+
+  border:
+    1px solid
+    rgba(198, 220, 255, 0.32);
+
+  background:
+    rgba(235, 244, 255, 0.055);
+}
+
+/* ==============================
+   MOON CLOCK - DIALOGUE MODE
+================================ */
+
+.moon-clock-display {
+  flex-shrink: 0;
+
+  transition:
+    padding 0.45s ease,
+    transform 0.45s ease;
+}
+
+
+/* 대화가 시작되면 시계 축소 */
+
+.moon-clock-display.moon-clock-compact {
+  padding:
+    10px
+    12px;
+
+  margin-top: 4px;
+}
+
+
+/* 날짜 */
+
+.moon-clock-compact .moon-date {
+  margin:
+    0 0
+    5px;
+
+  font-size: 5px;
+
+  opacity: 0.65;
+}
+
+
+/* TIME 글자 */
+
+.moon-clock-compact .moon-time-label {
+  margin:
+    0 0
+    4px;
+
+  font-size: 4px;
+
+  opacity: 0.5;
+}
+
+
+/* 00:00:00 */
+
+.moon-clock-compact .moon-time {
+  font-size: 30px;
+
+  line-height: 1;
+}
+
+
+/* ==============================
+   MOON CONTINUE DIALOGUE
+================================ */
+
+.moon-continue-dialogue {
+  flex-shrink: 0;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  margin-top: 10px;
+  padding-bottom: 14px;
+
+  animation:
+    moonContinueAppear
+    0.45s ease both;
+}
+
+
+/* 혀니 이미지도 조금 축소 */
+
+.moon-continue-dialogue
+.dialogue-icon-wrap {
+  margin-bottom: 4px;
+}
+
+.moon-continue-dialogue
+.dialogue-icon {
+  width: 62px;
+  height: 62px;
+}
+
+
+/* HYEONI 이름 */
+
+.moon-continue-dialogue
+.dialogue-name {
+  margin:
+    3px 0
+    6px;
+}
+
+
+/* 말풍선 */
+
+.moon-continue-dialogue
+.dialogue-box {
+  padding:
+    10px
+    12px;
+
+  font-size: 14px;
+
+  line-height: 1.2;
+}
+
+.moon-continue-dialogue
+.dialogue-box p {
+  margin:
+    0 0
+    4px;
+}
+
+.moon-continue-dialogue
+.dialogue-box p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* 선택지 */
+
+.moon-continue-dialogue
+.dialogue-options {
+  margin-top: 8px;
+}
+
+
+/* ==============================
+   OVERFLOW SAFETY
+================================ */
+
+.moon-clock-screen {
+  justify-content: flex-start;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+
+/* 날짜 */
+
+.moon-date {
+  margin:
+    0 0
+    17px;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 7px;
+
+  letter-spacing:
+    1px;
+
+  color:
+    rgba(197, 219, 255, 0.65);
+}
+
+
+/* TIME */
+
+.moon-time-label {
+  margin:
+    0 0
+    10px;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 5px;
+
+  letter-spacing:
+    2px;
+
+  color:
+    rgba(190, 215, 250, 0.48);
+}
+
+
+/* 시간 숫자 */
+
+.moon-time {
+  margin: 0;
+
+  font-family:
+    'DungGeunMo',
+    monospace;
+
+  font-size:
+    clamp(
+      42px,
+      6svh,
+      58px
+    );
+
+  line-height: 1;
+
+  letter-spacing:
+    2px;
+
+  color: #edf6ff;
+
+  text-shadow:
+    0 0 8px
+    rgba(183, 215, 255, 0.48);
+}
+
+
+/* ==============================
+   CHOICE
+================================ */
+
+.moon-choice-area {
+  width: 100%;
+
+  margin-top: 22px;
+
+  text-align: center;
+}
+
+
+.moon-hyeoni-message {
+  margin:
+    0 0
+    14px;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 16px;
+
+  line-height: 1.4;
+
+  color: #edf5ff;
+}
+
+
+.moon-options {
+  display: flex;
+
+  gap: 8px;
+}
+
+
+.moon-options button {
+  flex: 1;
+
+  min-height: 42px;
+
+  box-sizing: border-box;
+
+  padding:
+    8px
+    10px;
+
+  border:
+    1px solid
+    rgba(196, 220, 255, 0.48);
+
+  background:
+    rgba(235, 244, 255, 0.07);
+
+  color: #edf5ff;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 15px;
+
+  cursor: pointer;
+}
+
+
+/* ==============================
+   PAUSED
+================================ */
+
+.time-paused {
+  animation:
+    timeGlitch
+    0.18s
+    steps(2)
+    4;
+}
+
+
+@keyframes timeGlitch {
+
+  0% {
+    transform:
+      translateX(-2px);
+  }
+
+  50% {
+    transform:
+      translateX(2px);
+  }
+
+  100% {
+    transform:
+      translateX(0);
+  }
+
+}
+
+
+/* ==============================
+   SYSTEM MESSAGE
+================================ */
+
+.moon-system-message {
+  margin-top: 20px;
+
+  text-align: center;
+
+  animation:
+    moonMessageAppear
+    0.5s
+    ease
+    both;
+}
+
+
+.moon-system-message p {
+  margin:
+    0 0
+    12px;
+
+  font-family:
+    'Press Start 2P',
+    monospace;
+
+  font-size: 6px;
+
+  color: #c8ddff;
+}
+
+
+.moon-system-message span {
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  font-size: 16px;
+
+  line-height: 1.45;
+
+  color: #edf5ff;
+}
+
+
+@keyframes moonMessageAppear {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+/* ==============================
+   MOON CONTINUE DIALOGUE
+================================ */
+
+.moon-continue-dialogue {
+  width: 100%;
+
+  margin-top: 18px;
+
+  animation:
+    moonContinueAppear
+    0.45s
+    ease
+    both;
+}
+
+
+@keyframes moonContinueAppear {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(7px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+.idle-dialogue-message {
+  margin-top: 8px !important;
+
+  font-family:
+    'DungGeunMo',
+    sans-serif;
+
+  opacity: 0;
+
+  animation:
+    idleMessageAppear
+    0.4s
+    ease
+    forwards;
+}
+
+@keyframes idleMessageAppear {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(3px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
 }

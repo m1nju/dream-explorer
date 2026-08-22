@@ -10,6 +10,7 @@ import lamp from '../assets/lamp.png'
 import hyeoniGenie from '../assets/hyeoni-genie.png'
 
 import './LuckyHyeoni.css'
+import lampRubSound from '../assets/lamp-rub.mp3'
 
 
 function LuckyHyeoni({
@@ -39,100 +40,231 @@ function LuckyHyeoni({
     const [wishSaving, setWishSaving] = useState(false)
     const [wishSaved, setWishSaved] = useState(false)
 
+    const [rubParticles, setRubParticles] =
+  useState([])
 
-  /* ==============================
-     반짝이 개수
-  ============================== */
+const [isRubbing, setIsRubbing] =
+  useState(false)
 
-  const sparkleCount =
-    Math.floor(rubAmount / 10)
+const lampAreaRef =
+  useRef(null)
+
+const rubSoundRef =
+  useRef(null)
+
+const lastParticleTimeRef =
+  useRef(0)
 
 
   /* ==============================
      100% → 소환 연출
   ============================== */
 
-  useEffect(() => {
-    if (rubAmount < 100) return
+useEffect(() => {
+  if (rubAmount < 100) return
 
-    setSummonReady(true)
+  setSummonReady(true)
 
-    const timer = setTimeout(() => {
-      setIsSummoned(true)
-    }, 900)
+  const timer = setTimeout(() => {
 
-    return () => {
-      clearTimeout(timer)
+    // 샤라랑 효과음 멈추기
+    const audio = rubSoundRef.current
+
+    if (audio) {
+      audio.pause()
+      audio.currentTime = 0
     }
-  }, [rubAmount])
 
+    // 문지르는 상태도 종료
+    isRubbingRef.current = false
+    setIsRubbing(false)
 
-  /* ==============================
-     문지르기 시작
-  ============================== */
+    // 혀니 등장
+    setIsSummoned(true)
 
-  const handleRubStart = (event) => {
-    if (summonReady) return
+  }, 900)
 
-    isRubbingRef.current = true
-    lastXRef.current =
-      event.clientX
-
-    event.currentTarget
-      .setPointerCapture?.(
-        event.pointerId
-      )
+  return () => {
+    clearTimeout(timer)
   }
+}, [rubAmount])
+
+const handleRubStart = (event) => {
+  if (summonReady) return
+
+  isRubbingRef.current = true
+  setIsRubbing(true)
+
+  lastXRef.current =
+    event.clientX
+
+  event.currentTarget
+    .setPointerCapture?.(
+      event.pointerId
+    )
+
+
+  /* 효과음 */
+
+  const audio =
+    rubSoundRef.current
+
+  if (audio) {
+    audio.currentTime = 0
+    audio.volume = 0.55
+
+    audio.play().catch(() => {})
+  }
+}
 
 
   /* ==============================
      문지르기
   ============================== */
 
-  const handleRubMove = (event) => {
-    if (summonReady) return
-
-    if (!isRubbingRef.current) {
-      return
-    }
-
-    if (
-      lastXRef.current === null
-    ) {
-      return
-    }
+const handleRubMove = (event) => {
+  if (summonReady) return
+  if (!isRubbingRef.current) return
+  if (lastXRef.current === null) return
 
 
-    const distance =
-      Math.abs(
-        event.clientX -
-        lastXRef.current
+  /* =========================
+     문지른 거리 계산
+  ========================== */
+
+  const distance =
+    Math.abs(
+      event.clientX -
+      lastXRef.current
+    )
+
+
+  if (distance > 2) {
+    setRubAmount((prev) =>
+      Math.min(
+        prev + distance * 0.12,
+        100
       )
+    )
 
-
-    if (distance > 2) {
-      setRubAmount((prev) =>
-        Math.min(
-          prev +
-            distance * 0.12,
-          100
-        )
-      )
-
-      lastXRef.current =
-        event.clientX
-    }
+    lastXRef.current =
+      event.clientX
   }
+
+
+  /* =========================
+     드래그 경로 반짝이
+  ========================== */
+
+  const now = Date.now()
+
+  // 너무 많이 생성되지 않도록 제한
+  if (
+    now -
+      lastParticleTimeRef.current <
+    35
+  ) {
+    return
+  }
+
+  lastParticleTimeRef.current = now
+
+
+  const area =
+    lampAreaRef.current
+
+  if (!area) return
+
+
+  const rect =
+    area.getBoundingClientRect()
+
+
+  const id =
+    `${now}-${Math.random()}`
+
+
+  const types = [
+    'star',
+    'dot',
+    'glow',
+  ]
+
+  const type =
+    types[
+      Math.floor(
+        Math.random() *
+        types.length
+      )
+    ]
+
+
+  const particle = {
+    id,
+
+    type,
+
+    x:
+      event.clientX -
+      rect.left,
+
+    y:
+      event.clientY -
+      rect.top,
+
+    size:
+      Math.random() * 8 +
+      5,
+
+    moveX:
+      Math.random() * 28 -
+      14,
+
+    moveY:
+      -(Math.random() * 25 + 10),
+
+    rotate:
+      Math.random() * 90 -
+      45,
+  }
+
+
+  setRubParticles((prev) => [
+    ...prev,
+    particle,
+  ])
+
+
+  setTimeout(() => {
+    setRubParticles((prev) =>
+      prev.filter(
+        (item) =>
+          item.id !== id
+      )
+    )
+  }, 750)
+}
 
 
   /* ==============================
      문지르기 종료
   ============================== */
 
-  const handleRubEnd = () => {
-    isRubbingRef.current = false
-    lastXRef.current = null
+const handleRubEnd = () => {
+  isRubbingRef.current = false
+  setIsRubbing(false)
+
+  lastXRef.current = null
+
+
+  const audio =
+    rubSoundRef.current
+
+  if (audio) {
+    audio.pause()
+    audio.currentTime = 0
   }
+}
 
 
   /* ==============================
@@ -173,6 +305,13 @@ function LuckyHyeoni({
   return (
     <section className="lucky-hyeoni">
 
+        <audio
+        ref={rubSoundRef}
+        src={lampRubSound}
+        loop
+        preload="auto"
+        />
+
       {/* =========================
           HEADER
       ========================== */}
@@ -203,15 +342,24 @@ function LuckyHyeoni({
 
 
           <div
+            ref={lampAreaRef}
+
             className={`
-              lamp-area
-              ${
+                lamp-area
+
+                ${
+                isRubbing
+                    ? 'is-rubbing'
+                    : ''
+                }
+
+                ${
                 summonReady
-                  ? 'summon-ready'
-                  : ''
-              }
+                    ? 'summon-ready'
+                    : ''
+                }
             `}
-          >
+            >
 
             <img
               className="magic-lamp"
@@ -241,34 +389,49 @@ function LuckyHyeoni({
             />
 
 
-            {/* 문지르는 동안 반짝이 */}
+            <div className="rub-particle-layer">
 
-            <div className="lamp-sparkles">
+  {rubParticles.map(
+    (particle) => (
 
-              {Array.from({
-                length:
-                  sparkleCount,
-              }).map(
-                (_, index) => (
+      <span
+        key={particle.id}
 
-                  <span
-                    key={index}
+        className={`
+          rub-particle
+          ${particle.type}
+        `}
 
-                    className={`
-                      lamp-sparkle
-                      sparkle-${
-                        index % 8
-                      }
-                    `}
-                  >
-                    ✦
-                  </span>
+        style={{
+          left:
+            `${particle.x}px`,
 
-                )
-              )}
+          top:
+            `${particle.y}px`,
 
-            </div>
+          '--rub-size':
+            `${particle.size}px`,
 
+          '--rub-x':
+            `${particle.moveX}px`,
+
+          '--rub-y':
+            `${particle.moveY}px`,
+
+          '--rub-rotate':
+            `${particle.rotate}deg`,
+        }}
+      >
+        {particle.type ===
+        'star'
+          ? '✦'
+          : ''}
+      </span>
+
+    )
+  )}
+
+</div>
 
             {/* 소환 직전 팡 효과 */}
 
@@ -427,7 +590,11 @@ function LuckyHyeoni({
       </button>
 
     </section>
+
+    
+    
   )
+  
 }
 
 

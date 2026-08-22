@@ -539,107 +539,84 @@ const loadMyRanking = async () => {
 
 
 const saveScore = async () => {
-  const trimmedNickname = nickname.trim()
+  const trimmedNickname =
+    nickname.trim()
 
   if (!trimmedNickname) return
   if (scoreSaved || scoreSaving) return
 
+
   setScoreSaving(true)
   setNicknameError('')
+
 
   const normalizedNickname =
     trimmedNickname.toUpperCase()
 
+  const playTime =
+    gameTimeRef.current
 
-  // 1. 같은 닉네임이 이미 있는지 확인
-  const {
-    data: existingRows,
-    error: checkError,
-  } = await supabase
-    .from('scores')
-    .select('id, nickname, score, player_id')
-    .eq('nickname', normalizedNickname)
-    .limit(1)
 
-  if (checkError) {
+  const { data, error } =
+    await supabase.rpc(
+      'submit_game_score',
+      {
+        p_nickname:
+          normalizedNickname,
+
+        p_score:
+          score,
+
+        p_player_id:
+          playerId,
+
+        p_play_time:
+          playTime,
+      }
+    )
+
+
+  if (error) {
     console.error(
-      '닉네임 확인 실패:',
-      checkError
+      '점수 저장 실패:',
+      error
+    )
+
+    setNicknameError(
+      '점수를 저장하지 못했어요'
     )
 
     setScoreSaving(false)
+
     return
   }
 
 
-  const existing =
-    existingRows?.[0]
-
-
-  // 2. 같은 닉네임이 있는데
-  // 다른 사람 소유면 중복 닉네임 에러
   if (
-    existing &&
-    existing.player_id !== playerId
+    data ===
+    'nickname_taken'
   ) {
     setNicknameError(
       '이미 사용 중인 닉네임이에요'
     )
 
     setScoreSaving(false)
+
     return
   }
 
 
-  // 3. 내 닉네임 기록이 이미 있는 경우
-  if (existing) {
+  if (
+    data ===
+    'invalid_score'
+  ) {
+    setNicknameError(
+      '올바르지 않은 점수예요'
+    )
 
-    // 새 점수가 더 높을 때만 UPDATE
-    if (score > existing.score) {
-      const { error: updateError } =
-        await supabase
-          .from('scores')
-          .update({
-            score,
-          })
-          .eq('id', existing.id)
+    setScoreSaving(false)
 
-      if (updateError) {
-        console.error(
-          '점수 업데이트 실패:',
-          updateError
-        )
-
-        setScoreSaving(false)
-        return
-      }
-    }
-
-    // 새 점수가 더 낮거나 같으면
-    // DB는 아무것도 안 바꿈
-  }
-
-
-  // 4. 처음 쓰는 닉네임이면 새 행 생성
-  else {
-    const { error: insertError } =
-      await supabase
-        .from('scores')
-        .insert({
-          nickname: normalizedNickname,
-          score,
-          player_id: playerId,
-        })
-
-    if (insertError) {
-      console.error(
-        '점수 저장 실패:',
-        insertError
-      )
-
-      setScoreSaving(false)
-      return
-    }
+    return
   }
 
 
@@ -660,7 +637,14 @@ const saveScore = async () => {
   if (isSlidingRef.current) return
   if (yRef.current > 2) return
 
-  velocityRef.current = 690
+const isMobile =
+  window.innerWidth <= 600
+
+velocityRef.current =
+  isMobile
+    ? 670
+    : 690
+
   setIsJumping(true)
 
   // 점프 효과음
@@ -836,7 +820,10 @@ useEffect(() => {
   useEffect(() => {
     if (!isRunning || isGameOver) return
 
-    const gravity = 1800
+const gravity =
+  window.innerWidth <= 600
+    ? 1900
+    : 1800
 
     // 초반 속도는 기존보다 빠르게
     // 대신 시간이 지날수록 빨라지는 속도는 완만하게
@@ -1122,16 +1109,18 @@ nextSpawnRef.current =
             obstaclePaddingBottom = 2
           }
 
-
-          // cloud.png (코드상 moon)
-          // 이미지보다 충돌박스를 작게
-
           if (isMoon) {
-            obstaclePaddingX = 25
-            obstaclePaddingTop = 25
-            obstaclePaddingBottom = 25
-          }
+            obstaclePaddingX =
+              obstacleRect.width * 0.12
 
+            // 위쪽은 많이 잘라서 점프로 넘기 쉽게
+            obstaclePaddingTop =
+              obstacleRect.height * 0.35
+
+            // 아래쪽은 거의 유지해서 슬라이드 통과 방지
+            obstaclePaddingBottom =
+              obstacleRect.height * 0.02
+          }
 
           // hangingstar.png (코드상 ufo)
           // 이미지는 현재 위치 그대로 두고
