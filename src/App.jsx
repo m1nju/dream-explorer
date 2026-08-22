@@ -13,7 +13,7 @@ import Game from './components/Game'
 import DreamBackground from './components/DreamBackground'
 import LuckyHyeoni from './components/LuckyHyeoni'
 import WishSky from './components/WishSky'
-import Guestbook from './components/Guestbook'
+import DreamCall from './components/DreamCall'
 import BirthdayCafe from './components/BirthdayCafe'
 
 
@@ -77,8 +77,8 @@ function AppRoutes() {
                     navigate('/lucky')
                   }
 
-                  onGuestbook={() =>
-                    navigate('/guestbook')
+                  onDreamCall={() =>
+                    navigate('/dream-call')
                   }
 
                   onCafe={() =>
@@ -150,11 +150,11 @@ function AppRoutes() {
 
 
         {/* =========================
-            GUESTBOOK
+            DREAM CALL
         ========================== */}
 
         <Route
-          path="/guestbook"
+          path="/dream-call"
           element={
             <div className="dream-shell">
 
@@ -162,7 +162,7 @@ function AppRoutes() {
 
               <div className="dream-content">
 
-                <Guestbook
+                <DreamCall
                   onBack={() =>
                     navigate(-1)
                   }
@@ -173,7 +173,6 @@ function AppRoutes() {
             </div>
           }
         />
-
 
         {/* =========================
             BIRTHDAY CAFE

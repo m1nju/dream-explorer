@@ -6,7 +6,7 @@ function DreamMap({
   onBack,
   onGame,
   onLucky,
-  onGuestbook,
+  onDreamCall,
   onCafe,
 }) {
   const [mapReady, setMapReady] =
@@ -156,28 +156,25 @@ function DreamMap({
 
 
         {/* =====================
-            GUESTBOOK
+            DREAM CALL
         ====================== */}
 
         <button
           className="
             map-point
-            map-guestbook
+            map-dream-call
           "
           type="button"
-          onClick={onGuestbook}
-
+          onClick={onDreamCall}
           disabled={!mapReady}
         >
-
           <span className="map-star">
             ★
           </span>
 
           <span className="map-label">
-            GUESTBOOK
+            DREAM CALL
           </span>
-
         </button>
 
 
